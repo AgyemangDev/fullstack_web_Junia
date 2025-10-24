@@ -27,6 +27,8 @@ export class BookController {
       sort: {
         [property]: direction,
       },
+      genre: input['genre'],
+      isAvailable: input['isAvailable']=== 'true',
     });
 
     return {

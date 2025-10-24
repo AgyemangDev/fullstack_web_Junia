@@ -10,6 +10,18 @@ import { AuthorEntity, type AuthorId } from '../../authors/author.entity';
 
 export type BookId = string & { __brand: 'Book' };
 
+export enum BookGenre {
+  Fiction = 'Fiction',
+  Non_Fiction = 'Non-Fiction',
+  Science_Fiction = 'Science Fiction',
+  Biography = 'Biography',
+  Mystery = 'Mystery',
+  Fantasy = 'Fantasy',
+  Romance = 'Romance',
+  Thriller = 'Thriller',
+  Historical = 'Historical',
+}
+
 @Entity('books')
 export class BookEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -23,6 +35,18 @@ export class BookEntity extends BaseEntity {
 
   @Column({ name: 'author_id', type: 'uuid' })
   authorId: AuthorId;
+
+  @Column({ type: 'text', enum: BookGenre })
+  genre: BookGenre;
+
+  @Column({ type: 'varchar' })
+  photoUrl: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  description?: string | null;
+
+  @Column({ name: 'is_available', type: 'boolean', default: true })
+  isAvailable: boolean;
 
   @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'author_id' })

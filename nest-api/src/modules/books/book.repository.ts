@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { AuthorEntity } from '../authors/author.entity';
+import { BookGenre } from './entities/book.entity';
 import {
   BookModel,
   CreateBookModel,
@@ -23,14 +24,25 @@ export class BookRepository {
   public async getAllBooks(
     input?: FilterBooksModel,
   ): Promise<[BookModel[], number]> {
+    const where: FindOptionsWhere<BookEntity> = {};
+
+    if (input?.genre) {
+      where.genre = input.genre;
+    }
+
+    if (input?.isAvailable !== undefined) {
+      where.isAvailable = input.isAvailable;
+    }
+
     const [books, totalCount] = await this.bookRepository.findAndCount({
       take: input?.limit,
       skip: input?.offset,
       relations: { author: true },
       order: input?.sort,
+      where
     });
 
-    return [books, totalCount];
+    return [books.map(book => ({ ...book, genre: book.genre as BookGenre })), totalCount];
   }
 
   public async getBookById(id: string): Promise<BookModel | undefined> {
