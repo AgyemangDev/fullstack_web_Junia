@@ -1,4 +1,13 @@
-import { IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Max,
+  Min,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import type { AuthorId } from '../authors/author.entity';
 import { BookGenre } from './entities/book.entity';
 
@@ -14,10 +23,10 @@ export class CreateBookDto {
   @Max(2025)
   yearPublished: number;
 
- @IsEnum(BookGenre, { 
-  message: `genre must be: ${Object.values(BookGenre).join(', ')}`
- })
- genre: BookGenre;
+  @IsEnum(BookGenre, {
+    message: `genre must be: ${Object.values(BookGenre).join(', ')}`,
+  })
+  genre: BookGenre;
 
   @IsString()
   photoUrl: string;
@@ -64,11 +73,15 @@ export class GetBooksDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  limit: number;
+  @IsOptional()
+  @Type(() => Number)
+  limit: number = 10;
 
   @IsInt()
   @Min(0)
-  offset: number;
+  @IsOptional()
+  @Type(() => Number)
+  offset: number = 0;
 
   @IsString()
   @IsOptional()
@@ -79,4 +92,12 @@ export class GetBooksDto {
   })
   @IsOptional()
   genre?: BookGenre;
+
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return undefined;
+  })
+  isAvailable?: boolean;
 }

@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { AuthorEntity } from '../authors/author.entity';
-import { BookGenre } from './entities/book.entity';
 import {
   BookModel,
   CreateBookModel,
@@ -13,6 +12,8 @@ import { BookEntity, BookId } from './entities/book.entity';
 
 @Injectable()
 export class BookRepository {
+  private readonly logger = new Logger(BookRepository.name);
+
   constructor(
     @InjectRepository(AuthorEntity)
     private readonly authorRepository: Repository<AuthorEntity>,
@@ -24,25 +25,52 @@ export class BookRepository {
   public async getAllBooks(
     input?: FilterBooksModel,
   ): Promise<[BookModel[], number]> {
+    this.logger.log('=== Repository getAllBooks called ===');
+    this.logger.log(`Input received: ${JSON.stringify(input)}`);
     const where: FindOptionsWhere<BookEntity> = {};
 
-    if (input?.genre) {
+    if (input?.genre !== undefined) {
+      this.logger.log(`Adding genre filter: ${input.genre}`);
       where.genre = input.genre;
     }
 
     if (input?.isAvailable !== undefined) {
+      this.logger.log(`Adding isAvailable filter: ${input.isAvailable}`);
       where.isAvailable = input.isAvailable;
+    } else {
+      this.logger.log(
+        'isAvailable is undefined - NOT filtering by availability',
+      );
     }
 
-    const [books, totalCount] = await this.bookRepository.findAndCount({
-      take: input?.limit,
-      skip: input?.offset,
+    const whereClause = Object.keys(where).length > 0 ? where : undefined;
+    this.logger.log(`Where clause: ${JSON.stringify(whereClause)}`);
+    this.logger.log(`Where clause is undefined: ${whereClause === undefined}`);
+
+    const queryOptions = {
+      take: input?.limit ?? 10,
+      skip: input?.offset ?? 0,
       relations: { author: true },
       order: input?.sort,
-      where
+      where: whereClause,
+    };
+
+    this.logger.log(`Final query options: ${JSON.stringify(queryOptions)}`);
+
+    const [books, totalCount] =
+      await this.bookRepository.findAndCount(queryOptions);
+
+    this.logger.log(
+      `Query returned ${books.length} books, total count: ${totalCount}`,
+    );
+    // Log first few books to see their isAvailable values
+    books.slice(0, 3).forEach((book, index) => {
+      this.logger.log(
+        `Book ${index + 1}: ${book.title}, isAvailable: ${book.isAvailable}`,
+      );
     });
 
-    return [books.map(book => ({ ...book, genre: book.genre as BookGenre })), totalCount];
+    return [books.map((book) => ({ ...book, genre: book.genre })), totalCount];
   }
 
   public async getBookById(id: string): Promise<BookModel | undefined> {
@@ -77,7 +105,13 @@ export class BookRepository {
       throw new Error('Author not found');
     }
 
-    return this.bookRepository.save(this.bookRepository.create(book));
+    const createdBook = await this.bookRepository.save(
+      this.bookRepository.create(book),
+    );
+    this.logger.log(
+      `Book created with isAvailable: ${createdBook.isAvailable}`,
+    );
+    return createdBook;
   }
 
   public async updateBook(
