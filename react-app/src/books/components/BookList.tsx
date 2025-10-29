@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useBookProvider } from '../providers/useBookProvider'
 import { BookListItem } from './BookListItem'
 import { CreateBookModal } from './CreateBookModal'
+import { Row, Col } from 'antd'
 
 export function BookList() {
   const { books, loadBooks, deleteBook, updateBook, createBook } =
@@ -9,21 +10,27 @@ export function BookList() {
 
   useEffect(() => {
     loadBooks()
-  }, [])
+  }, [loadBooks])
 
   return (
     <>
       <CreateBookModal onCreate={createBook} />
-      <div style={{ padding: '0 .5rem' }}>
+      <Row gutter={[16, 16]} style={{ padding: '0 .5rem' }}>
         {books.map(book => (
-          <BookListItem
+          <Col
             key={book.id}
-            book={book}
-            onDelete={deleteBook}
-            onUpdate={updateBook}
-          />
+            xs={12} // mobile: 2 per row
+            sm={12} // small screens: 2 per row
+            md={6} // medium+ screens: 4 per row
+          >
+            <BookListItem
+              book={book}
+              onDelete={deleteBook}
+              onUpdate={updateBook}
+            />
+          </Col>
         ))}
-      </div>
+      </Row>
     </>
   )
 }

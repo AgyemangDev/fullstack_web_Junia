@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Route as indexRoute } from './routes/index'
 import { Route as aboutRoute } from './routes/about'
-import { Route as booksRoute } from './routes/books'
+import { Route as booksRoute } from './routes/books/index'
 import { Space, type MenuProps } from 'antd'
 import { BookOutlined, HomeOutlined, InfoOutlined } from '@ant-design/icons'
 import Menu from 'antd/es/menu/menu'
@@ -19,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
     },
     {
       label: <Link to={booksRoute.to}>Books</Link>,
-      key: 'books',
+      key: 'book',
       icon: <BookOutlined />,
     },
     {

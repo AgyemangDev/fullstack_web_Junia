@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { BookModel, UpdateBookModel } from '../BookModel'
-import { Button, Col, Row } from 'antd'
+import { Card, Col, Row, Button } from 'antd'
 import {
   CheckOutlined,
   CloseOutlined,
@@ -30,49 +30,23 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
   }
 
   return (
-    <Row
-      style={{
-        width: '100%',
-        height: '50px',
-        borderRadius: '10px',
-        backgroundColor: '#EEEEEE',
-        margin: '1rem 0',
-        padding: '.25rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Col span={12} style={{ margin: 'auto 0' }}>
-        {isEditing ? (
-          <input value={title} onChange={e => setTitle(e.target.value)} />
+    <Card
+      title={
+        isEditing ? (
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            style={{ width: '100%' }}
+          />
         ) : (
-          <Link
-            to={`/books/$bookId`}
-            params={{ bookId: book.id }}
-            style={{
-              margin: 'auto 0',
-              textAlign: 'left',
-            }}
-          >
-            <span style={{ fontWeight: 'bold' }}>{book.title}</span> -{' '}
-            {book.yearPublished}
+          <Link to={`/books/$bookId`} params={{ bookId: book.id }}>
+            {book.title} - {book.yearPublished}
           </Link>
-        )}
-      </Col>
-      <Col span={9} style={{ margin: 'auto 0' }}>
-        by <span style={{ fontWeight: 'bold' }}>{book.author.firstName}</span>{' '}
-        <span style={{ fontWeight: 'bold' }}>{book.author.lastName}</span>
-      </Col>
-      <Col
-        span={3}
-        style={{
-          alignItems: 'right',
-          display: 'flex',
-          gap: '.25rem',
-          margin: 'auto 0',
-        }}
-      >
-        {isEditing ? (
+        )
+      }
+      style={{ width: '100%', marginBottom: '1rem' }}
+      actions={[
+        isEditing ? (
           <>
             <Button type="primary" onClick={onValidateEdit}>
               <CheckOutlined />
@@ -85,11 +59,45 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
           <Button type="primary" onClick={() => setIsEditing(true)}>
             <EditOutlined />
           </Button>
-        )}
+        ),
+        // eslint-disable-next-line react/jsx-key
         <Button type="primary" danger onClick={() => onDelete(book.id)}>
           <DeleteOutlined />
-        </Button>
-      </Col>
+        </Button>,
+      ]}
+    >
+      <p>
+        <strong>Author:</strong> {book.author.firstName} {book.author.lastName}
+      </p>
+      <p>
+        <strong>Genre:</strong> {book.genre}
+      </p>
+      <p>
+        <strong>Available:</strong> {book.isAvailable ? 'Yes' : 'No'}
+      </p>
+    </Card>
+  )
+}
+
+interface BookListProps {
+  books: BookModel[]
+  onDelete: (id: string) => void
+  onUpdate: (id: string, input: UpdateBookModel) => void
+}
+
+export function BookList({ books, onDelete, onUpdate }: BookListProps) {
+  return (
+    <Row gutter={[16, 16]}>
+      {books.map(book => (
+        <Col
+          key={book.id}
+          xs={12} // mobile: 2 per row
+          sm={12} // small screens: 2 per row
+          md={6} // medium+ screens: 4 per row
+        >
+          <BookListItem book={book} onDelete={onDelete} onUpdate={onUpdate} />
+        </Col>
+      ))}
     </Row>
   )
 }
