@@ -31,6 +31,10 @@ export class CreateBookDto {
   @IsString()
   photoUrl: string;
 
+  @IsInt()
+  @Min(0)
+  price: number;
+
   @IsString()
   @IsOptional()
   description?: string;
@@ -60,6 +64,10 @@ export class UpdateBookDto {
   @IsString()
   @IsOptional()
   photoUrl: string;
+
+  @IsInt()
+  @Min(0)
+  price: number;
 
   @IsString()
   @IsOptional()

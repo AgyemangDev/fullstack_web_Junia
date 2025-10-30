@@ -70,7 +70,10 @@ export class BookRepository {
       );
     });
 
-    return [books.map((book) => ({ ...book, genre: book.genre })), totalCount];
+    return [
+      books.map((book) => ({ ...book, genre: book.genre, price: book.price })),
+      totalCount,
+    ];
   }
 
   public async getBookById(id: string): Promise<BookModel | undefined> {

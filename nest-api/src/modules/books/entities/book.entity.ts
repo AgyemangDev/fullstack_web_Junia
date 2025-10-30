@@ -42,6 +42,9 @@ export class BookEntity extends BaseEntity {
   @Column({ type: 'varchar' })
   photoUrl: string;
 
+  @Column({ type: 'float', default: 0 })
+  price: number;
+
   @Column({ type: 'varchar', nullable: true })
   description?: string | null;
 
