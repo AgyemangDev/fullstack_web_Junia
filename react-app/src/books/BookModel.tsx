@@ -22,6 +22,8 @@ export type CreateBookModel = {
   genre: BookGenre
   photoUrl: string
   description?: string
+  isAvailable: boolean
+  price: number
 }
 
 export const BookGenre = {

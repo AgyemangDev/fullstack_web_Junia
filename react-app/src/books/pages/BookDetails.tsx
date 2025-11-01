@@ -8,30 +8,75 @@ import {
   Row,
   Col,
   Divider,
+  Button,
+  Space,
+  Input,
 } from 'antd'
 import { useBookDetailsProvider } from '../providers/useBookDetailsProvider'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowLeftOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  CheckOutlined,
+  CloseOutlined,
 } from '@ant-design/icons'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as booksRoute } from '../../routes/books/index'
+import type { UpdateBookModel } from '../BookModel'
+import { Modal } from 'antd'
 
 const { Title, Text, Paragraph } = Typography
 
 interface BookDetailsProps {
   id: string
+  onUpdate: (id: string, input: UpdateBookModel) => void
+  onDelete: (id: string) => void
 }
 
-export const BookDetails = ({ id }: BookDetailsProps) => {
+export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   const { isLoading, book, loadBook } = useBookDetailsProvider(id)
+  const [isEditing, setIsEditing] = useState(false)
+  const [title, setTitle] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadBook()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  useEffect(() => {
+    if (book) {
+      setTitle(book.title)
+    }
+  }, [book])
+
+  const handleDelete = () => {
+    console.log('Opening delete confirmation for:', id)
+    Modal.confirm({
+      title: 'Delete Book',
+      content: `Are you sure you want to delete "${book?.title}"?`,
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        await onDelete(id)
+        navigate({ to: booksRoute.to })
+      },
+    })
+  }
+
+  const handleSave = () => {
+    onUpdate(id, { title })
+    setIsEditing(false)
+  }
+
+  const handleCancel = () => {
+    setTitle(book?.title || '')
+    setIsEditing(false)
+  }
 
   if (isLoading) {
     return (
@@ -59,8 +104,17 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
         minHeight: '100vh',
       }}
     >
-      {/* Back link */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      {/* Header with Back link and Actions */}
+      <div
+        style={{
+          marginBottom: '1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}
+      >
         <Link
           to={booksRoute.to}
           style={{
@@ -74,6 +128,44 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
         >
           <ArrowLeftOutlined /> Back to all books
         </Link>
+
+        {isEditing ? (
+          <Space>
+            <Button
+              type="primary"
+              icon={<CheckOutlined />}
+              onClick={handleSave}
+              size="middle"
+            >
+              Save
+            </Button>
+            <Button
+              icon={<CloseOutlined />}
+              onClick={handleCancel}
+              size="middle"
+            >
+              Cancel
+            </Button>
+          </Space>
+        ) : (
+          <Space>
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => setIsEditing(true)}
+              size="middle"
+            >
+              Edit
+            </Button>
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={handleDelete}
+              size="middle"
+            >
+              Delete
+            </Button>
+          </Space>
+        )}
       </div>
 
       <Row gutter={[32, 32]}>
@@ -148,12 +240,27 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
         <Col xs={24} md={14} lg={16}>
           <div style={{ textAlign: 'left' }}>
             {/* Book Title */}
-            <Title
-              level={1}
-              style={{ marginBottom: '0.5rem', color: '#395E66' }}
-            >
-              {book.title}
-            </Title>
+            {isEditing ? (
+              <Input
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                style={{
+                  fontSize: '28px',
+                  fontWeight: 600,
+                  marginBottom: '0.5rem',
+                  height: 'auto',
+                  padding: '8px 12px',
+                }}
+                placeholder="Book title"
+              />
+            ) : (
+              <Title
+                level={1}
+                style={{ marginBottom: '0.5rem', color: '#395E66' }}
+              >
+                {book.title}
+              </Title>
+            )}
 
             {/* Metadata */}
             <div
