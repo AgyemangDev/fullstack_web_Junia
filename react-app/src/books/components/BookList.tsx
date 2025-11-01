@@ -1,16 +1,14 @@
 import { useEffect } from 'react'
 import { useBookProvider } from '../providers/useBookProvider'
 import { BookListItem } from './BookListItem'
-import { CreateBookModal } from './CreateBookModal'
-import { Row, Col, Grid } from 'antd'
+import { Row, Col } from 'antd'
 import Search from './Search'
-import { PlusOutlined } from '@ant-design/icons'
+import { CreateBookButton } from './CreateBookButton'
 
-const { useBreakpoint } = Grid
 
 export function BookList() {
   const { books, loadBooks, createBook } = useBookProvider()
-  const screens = useBreakpoint() // Detect screen size
+
 
   useEffect(() => {
     loadBooks()
@@ -30,16 +28,7 @@ export function BookList() {
         </Col>
 
         <Col>
-          <CreateBookModal
-            onCreate={createBook}
-            // If mobile (xs), show only the plus icon
-            buttonProps={{
-              icon: <PlusOutlined />,
-              type: 'primary',
-              size: screens.xs ? 'small' : 'middle',
-              children: screens.xs ? null : 'Create Book',
-            }}
-          />
+         <CreateBookButton onCreate={createBook} />
         </Col>
       </Row>
 

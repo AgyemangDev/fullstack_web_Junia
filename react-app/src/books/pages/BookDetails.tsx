@@ -18,7 +18,6 @@ import {
   ArrowLeftOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
-  EditOutlined,
   DeleteOutlined,
   CheckOutlined,
   CloseOutlined,
@@ -27,6 +26,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as booksRoute } from '../../routes/books/index'
 import type { UpdateBookModel } from '../BookModel'
 import { Modal } from 'antd'
+import { EditBookButton } from '../components/EditBookButton'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -149,13 +149,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
           </Space>
         ) : (
           <Space>
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => setIsEditing(true)}
-              size="middle"
-            >
-              Edit
-            </Button>
+            <EditBookButton book={book} onUpdate={onUpdate} />
             <Button
               danger
               icon={<DeleteOutlined />}
