@@ -40,18 +40,23 @@ export class SaleRepository {
       saleDate: new Date(dto.saleDate),
     });
 
-    return this.saleRepository.save(sale);
+    const savedSale = await this.saleRepository.save(sale);
+
+    // Mettre à jour la disponibilité du livre à false après la vente
+    await this.bookRepository.update(dto.bookId, { isAvailable: false });
+
+    return savedSale;
   }
 
   async getSaleById(id: string): Promise<SaleEntity | null> {
     return this.saleRepository.findOne({
       where: { id },
-      relations: ['user', 'book'],
+      relations: ['user', 'book', 'book.author'],
     });
   }
 
   async getAllSales(): Promise<SaleEntity[]> {
-    return this.saleRepository.find({ relations: ['user', 'book'] });
+    return this.saleRepository.find({ relations: ['user', 'book', 'book.author'] });
   }
 
   async deleteSale(id: string): Promise<void> {

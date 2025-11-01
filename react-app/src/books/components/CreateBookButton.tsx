@@ -13,8 +13,12 @@ export function CreateBookButton({ onCreate }) {
         icon={<PlusOutlined />}
         type="primary"
         onClick={() => setOpen(true)}
+        style={{
+          backgroundColor: '#395E66',
+          borderColor: '#395E66',
+        }}
       >
-        Create Book
+        Ajouter un Livre
       </Button>
 
       <BookFormModal

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import type { BookModel, CreateBookModel, UpdateBookModel } from '../BookModel'
-import axios from 'axios'
+import apiClient from '../../api/axios'
 
 export const useBookProvider = () => {
   const [books, setBooks] = useState<BookModel[]>([])
 
   const loadBooks = () => {
-    axios
-      .get('http://localhost:3000/books')
+    apiClient
+      .get('/books')
       .then(data => {
         setBooks(data.data.data)
       })
@@ -15,8 +15,8 @@ export const useBookProvider = () => {
   }
 
   const createBook = (book: CreateBookModel) => {
-    axios
-      .post('http://localhost:3000/books', book)
+    apiClient
+      .post('/books', book)
       .then(() => {
         loadBooks()
       })
@@ -24,8 +24,8 @@ export const useBookProvider = () => {
   }
 
   const updateBook = (id: string, input: UpdateBookModel) => {
-    axios
-      .patch(`http://localhost:3000/books/${id}`, input)
+    apiClient
+      .patch(`/books/${id}`, input)
       .then(() => {
         loadBooks()
       })
@@ -33,8 +33,8 @@ export const useBookProvider = () => {
   }
 
   const deleteBook = (id: string) => {
-    axios
-      .delete(`http://localhost:3000/books/${id}`)
+    apiClient
+      .delete(`/books/${id}`)
       .then(() => {
         loadBooks()
       })

@@ -123,6 +123,7 @@ export class BookRepository {
   ): Promise<BookModel | undefined> {
     const oldBook = await this.bookRepository.findOne({
       where: { id: id as BookId },
+      relations: { author: true },
     });
 
     if (!oldBook) {
@@ -130,6 +131,22 @@ export class BookRepository {
     }
 
     await this.bookRepository.update(id, book);
+
+    // Retourner le livre mis à jour avec l'auteur
+    const updatedBook = await this.bookRepository.findOne({
+      where: { id: id as BookId },
+      relations: { author: true },
+    });
+
+    if (!updatedBook) {
+      return undefined;
+    }
+
+    return {
+      ...updatedBook,
+      genre: updatedBook.genre,
+      price: updatedBook.price,
+    };
   }
 
   public async deleteBook(id: string): Promise<void> {

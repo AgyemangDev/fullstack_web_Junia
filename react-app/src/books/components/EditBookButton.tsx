@@ -23,8 +23,13 @@ export function EditBookButton({ book, onUpdate }: EditBookButtonProps) {
         icon={<EditOutlined />}
         onClick={() => setOpen(true)}
         size="middle"
+        style={{
+          backgroundColor: '#395E66',
+          borderColor: '#395E66',
+          color: 'white',
+        }}
       >
-        Edit
+        Modifier
       </Button>
 
       <BookFormModal

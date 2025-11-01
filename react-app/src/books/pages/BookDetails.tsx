@@ -56,11 +56,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   const handleDelete = () => {
     console.log('Opening delete confirmation for:', id)
     Modal.confirm({
-      title: 'Delete Book',
-      content: `Are you sure you want to delete "${book?.title}"?`,
-      okText: 'Delete',
+      title: 'Supprimer le livre',
+      content: `Êtes-vous sûr de vouloir supprimer "${book?.title}" ?`,
+      okText: 'Supprimer',
       okType: 'danger',
-      cancelText: 'Cancel',
+      cancelText: 'Annuler',
       onOk: async () => {
         await onDelete(id)
         navigate({ to: booksRoute.to })
@@ -89,7 +89,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   if (!book) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <Text>No book found.</Text>
+        <Text>Aucun livre trouvé.</Text>
       </div>
     )
   }
@@ -100,7 +100,6 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
         padding: '2rem',
         maxWidth: '1200px',
         margin: '0 auto',
-        background: 'linear-gradient(to bottom, #f0f2f5 0%, #ffffff 300px)',
         minHeight: '100vh',
       }}
     >
@@ -126,7 +125,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
             textDecoration: 'none',
           }}
         >
-          <ArrowLeftOutlined /> Back to all books
+          <ArrowLeftOutlined /> Retour à la liste
         </Link>
 
         {isEditing ? (
@@ -136,15 +135,19 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               icon={<CheckOutlined />}
               onClick={handleSave}
               size="middle"
+              style={{
+                backgroundColor: '#395E66',
+                borderColor: '#395E66',
+              }}
             >
-              Save
+              Sauvegarder
             </Button>
             <Button
               icon={<CloseOutlined />}
               onClick={handleCancel}
               size="middle"
             >
-              Cancel
+              Annuler
             </Button>
           </Space>
         ) : (
@@ -156,7 +159,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               onClick={handleDelete}
               size="middle"
             >
-              Delete
+              Supprimer
             </Button>
           </Space>
         )}
@@ -198,7 +201,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                   borderRadius: '8px',
                 }}
               >
-                <Text type="secondary">No cover available</Text>
+                <Text type="secondary">Pas de couverture disponible</Text>
               </div>
             )}
 
@@ -216,11 +219,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                   >
                     {book.isAvailable ? (
                       <>
-                        <CheckCircleOutlined /> Available
+                        <CheckCircleOutlined /> Disponible
                       </>
                     ) : (
                       <>
-                        <CloseCircleOutlined /> Not Available
+                        <CloseCircleOutlined /> Non disponible
                       </>
                     )}
                   </span>
@@ -273,7 +276,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                 {book.genre}
               </Tag>
               <Text type="secondary" style={{ fontSize: '16px' }}>
-                Published {book.yearPublished}
+                Publié en {book.yearPublished}
               </Text>
             </div>
 
@@ -298,7 +301,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
             {/* Author Section */}
             <div>
               <Title level={4} style={{ color: '#395E66' }}>
-                About the Author
+                À propos de l'auteur
               </Title>
               <Title
                 level={5}

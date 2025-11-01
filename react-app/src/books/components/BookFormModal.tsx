@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { CreateBookModel, UpdateBookModel } from '../BookModel'
 import { BookGenre } from '../BookModel'
-import { Input, Modal, Select, Space, InputNumber, Switch } from 'antd'
+import { Input, Modal, Select, Space, InputNumber, Switch, Typography } from 'antd'
 import { useBookAuthorsProviders } from '../providers/useBookAuthorsProviders'
 
 interface BookFormModalProps {
@@ -89,12 +89,23 @@ export function BookFormModal({
 
   return (
     <Modal
-      title={mode === 'create' ? 'Create New Book' : 'Edit Book'}
+      title={
+        <Typography.Title
+          level={4}
+          style={{ color: '#395E66', margin: 0 }}
+        >
+          {mode === 'create' ? 'Créer un nouveau livre' : 'Modifier le livre'}
+        </Typography.Title>
+      }
       open={open}
       onCancel={onClose}
       onOk={handleSubmit}
-      okText={mode === 'create' ? 'Create' : 'Update'}
+      okText={mode === 'create' ? 'Créer' : 'Mettre à jour'}
       okButtonProps={{
+        style: {
+          backgroundColor: '#395E66',
+          borderColor: '#395E66',
+        },
         disabled:
           !title ||
           !authorId ||
@@ -107,12 +118,12 @@ export function BookFormModal({
     >
       <Space direction="vertical" style={{ width: '100%' }}>
         <Input
-          placeholder="Book Title"
+          placeholder="Titre du livre"
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
         <Select
-          placeholder="Select Author"
+          placeholder="Sélectionner un auteur"
           style={{ width: '100%' }}
           options={authors.map(author => ({
             label: `${author.firstName} ${author.lastName}`,
@@ -122,13 +133,13 @@ export function BookFormModal({
           onChange={value => setAuthorId(value)}
         />
         <InputNumber
-          placeholder="Year Published"
+          placeholder="Année de publication"
           style={{ width: '100%' }}
           value={yearPublished}
           onChange={value => setYearPublished(value ?? undefined)}
         />
         <Select
-          placeholder="Select Genre"
+          placeholder="Sélectionner un genre"
           style={{ width: '100%' }}
           options={Object.entries(BookGenre).map(([key, value]) => ({
             label: value,
@@ -138,7 +149,7 @@ export function BookFormModal({
           onChange={value => setGenre(value)}
         />
         <Input
-          placeholder="Photo URL"
+          placeholder="URL de la photo"
           value={photoUrl}
           onChange={e => setPhotoUrl(e.target.value)}
         />
@@ -149,14 +160,14 @@ export function BookFormModal({
           rows={3}
         />
         <Space>
-          <span>Available:</span>
+          <span>Disponible:</span>
           <Switch
             checked={isAvailable}
             onChange={checked => setIsAvailable(checked)}
           />
         </Space>
         <InputNumber
-          placeholder="Price"
+          placeholder="Prix"
           style={{ width: '100%' }}
           value={price}
           onChange={value => setPrice(value ?? undefined)}

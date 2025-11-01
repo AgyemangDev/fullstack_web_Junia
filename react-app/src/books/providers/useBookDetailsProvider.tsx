@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { BookModel } from '../BookModel'
+import apiClient from '../../api/axios'
 
 export const useBookDetailsProvider = (id: string) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -7,12 +8,12 @@ export const useBookDetailsProvider = (id: string) => {
 
   const loadBook = () => {
     setIsLoading(true)
-    fetch(`http://localhost:3000/books/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setBook(data)
+    apiClient
+      .get(`/books/${id}`)
+      .then(response => {
+        setBook(response.data)
       })
+      .catch(err => console.error(err))
       .finally(() => setIsLoading(false))
   }
 

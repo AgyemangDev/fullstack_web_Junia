@@ -3,9 +3,13 @@ import { SearchOutlined } from '@ant-design/icons'
 
 const { Search: AntSearch } = Input
 
-function Search() {
+interface SearchProps {
+  onSearch: (value: string) => void
+}
+
+function Search({ onSearch }: SearchProps) {
   const handleSearch = (value: string) => {
-    console.log('Search value:', value)
+    onSearch(value)
   }
 
   return (
@@ -18,7 +22,7 @@ function Search() {
       }}
     >
       <AntSearch
-        placeholder="Search..."
+        placeholder="Rechercher par titre ou auteur..."
         allowClear
         enterButton={<SearchOutlined />}
         onSearch={handleSearch}

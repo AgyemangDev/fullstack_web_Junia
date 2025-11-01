@@ -18,8 +18,13 @@ export function BookListItem({ book }: BookListItemProps) {
     >
       <Card
         hoverable
-        bodyStyle={{ padding: 0 }}
-        style={{ overflow: 'hidden', borderRadius: '8px' }}
+        styles={{ body: { padding: 0 } }}
+        style={{
+          overflow: 'hidden',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+        }}
       >
         <div style={{ position: 'relative', height: 300 }}>
           {/* Book Cover Image */}
@@ -40,17 +45,17 @@ export function BookListItem({ book }: BookListItemProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: '#f5f5f5',
+                background: 'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
                 color: '#999',
               }}
             >
-              <BookOutlined style={{ fontSize: 48 }} />
+              <BookOutlined style={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.3)' }} />
             </div>
           )}
 
           {/* Availability Badge at Top */}
           <Badge.Ribbon
-            text={book.isAvailable ? 'Available' : 'Borrowed'}
+            text={book.isAvailable ? 'Disponible' : 'Emprunté'}
             color={book.isAvailable ? 'green' : 'red'}
             style={{ top: 10, right: -5 }}
           />

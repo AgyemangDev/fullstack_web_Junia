@@ -8,10 +8,14 @@ import {
   Post,
   Query,
   Logger,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateBookDto, GetBooksDto, UpdateBookDto } from './book.dto';
 import { GetBooksModel } from './book.model';
 import { BookService } from './book.service';
+import { JwtAuthGuard } from '../users/jwt-auth.guard';
+import { RolesGuard, Roles } from '../users/roles.guard';
+import { UserRole } from '../users/user.dto';
 
 @Controller('books')
 export class BookController {
@@ -66,17 +70,23 @@ export class BookController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.LIBRARIAN)
   createBook(@Body() createBookDto: CreateBookDto) {
     this.logger.log(`Creating book: ${JSON.stringify(createBookDto)}`);
     return this.bookService.createBook(createBookDto);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.LIBRARIAN)
   updateBook(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
     return this.bookService.updateBook(id, updateBookDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.LIBRARIAN)
   deleteBook(@Param('id') id: string) {
     return this.bookService.deleteBook(id);
   }

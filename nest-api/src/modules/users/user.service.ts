@@ -4,15 +4,25 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
 import { CreateUserModel, UserModel } from './user.model';
 import { UpdateUserDto, UserRole } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserId } from './user.entity';
 
+// Interface pour la réponse de connexion avec token
+export interface LoginResponse {
+  user: UserModel;
+  access_token: string;
+}
+
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async getAllUsers() {
     // Assuming your repository already handles this
@@ -56,7 +66,7 @@ export class UserService {
     email: string,
     password: string,
     expectedRole?: UserRole,
-  ): Promise<UserModel> {
+  ): Promise<LoginResponse> {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
@@ -75,7 +85,15 @@ export class UserService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: pwd, ...safeUser } = user;
-    return safeUser;
+
+    // Générer le token JWT
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    const access_token = this.jwtService.sign(payload);
+
+    return {
+      user: safeUser,
+      access_token,
+    };
   }
 
   async updateUser(id: string, data: UpdateUserDto) {
