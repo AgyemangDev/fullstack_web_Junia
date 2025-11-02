@@ -15,9 +15,19 @@ export interface User {
 interface AuthContextType {
   user: User | null
   token: string | null
-  login: (email: string, password: string, expectedRole?: string) => Promise<void>
+  login: (
+    email: string,
+    password: string,
+    expectedRole?: string,
+  ) => Promise<void>
   logout: () => void
-  signup: (firstName: string, lastName: string, email: string, password: string, role: 'librarian' | 'member') => Promise<void>
+  signup: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    role: 'librarian' | 'member',
+  ) => Promise<void>
   isAuthenticated: boolean
 }
 
@@ -44,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (
     email: string,
     password: string,
-    expectedRole?: string
+    expectedRole?: string,
   ) => {
     const response = await apiClient.post('/users/login', {
       email,
@@ -75,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     lastName: string,
     email: string,
     password: string,
-    role: 'librarian' | 'member'
+    role: 'librarian' | 'member',
   ) => {
     await apiClient.post('/users', {
       firstName,
@@ -98,6 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 // Hook pour utiliser le contexte d'authentification
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
@@ -105,4 +116,3 @@ export function useAuth() {
   }
   return context
 }
-

@@ -98,10 +98,10 @@ export function LoginPage() {
           </Form>
 
           <div style={{ textAlign: 'center' }}>
-            Don't have an account yet?{' '}
+            Don&apos;t have an account yet?{' '}
             <Button
               type="link"
-              onClick={() => navigate({ to: '/auth/signup' })}
+              onClick={() => navigate({ to: '/signup' })}
               style={{ padding: 0 }}
             >
               Sign up
@@ -112,4 +112,3 @@ export function LoginPage() {
     </div>
   )
 }
-

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import type { CreateBookModel,UpdateBookModel } from '../BookModel'
+import type { CreateBookModel, UpdateBookModel } from '../BookModel'
 import { BookGenre } from '../BookModel'
 import { Button, Input, Modal, Select, Space, InputNumber, Switch } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useBookAuthorsProviders } from '../providers/useBookAuthorsProviders'
 
 interface CreateBookModalProps {
-  onCreate: (book: CreateBookModel) => void,
-  onUpdate?: (book: UpdateBookModel) => void,
+  onCreate: (book: CreateBookModel) => void
+  onUpdate?: (book: UpdateBookModel) => void
 }
 
 export function CreateBookModal({

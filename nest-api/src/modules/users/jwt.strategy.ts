@@ -19,7 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       // Extraction du token depuis le header Authorization
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       // Clé secrète pour valider le token
-      secretOrKey: process.env.JWT_SECRET || 'babel-library-secret-key-change-in-production',
+      secretOrKey:
+        process.env.JWT_SECRET ||
+        'babel-library-secret-key-change-in-production',
     });
   }
 
@@ -27,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload): Promise<UserModel> {
     // Vérifier que l'utilisateur existe toujours
     const user = await this.userRepository.getUserById(payload.sub as UserId);
-    
+
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
@@ -36,4 +38,3 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return user;
   }
 }
-

@@ -49,7 +49,9 @@ export function BookListItem({ book }: BookListItemProps) {
                 color: '#999',
               }}
             >
-              <BookOutlined style={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.3)' }} />
+              <BookOutlined
+                style={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.3)' }}
+              />
             </div>
           )}
 

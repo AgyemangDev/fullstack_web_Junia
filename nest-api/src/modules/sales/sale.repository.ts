@@ -56,7 +56,9 @@ export class SaleRepository {
   }
 
   async getAllSales(): Promise<SaleEntity[]> {
-    return this.saleRepository.find({ relations: ['user', 'book', 'book.author'] });
+    return this.saleRepository.find({
+      relations: ['user', 'book', 'book.author'],
+    });
   }
 
   async deleteSale(id: string): Promise<void> {

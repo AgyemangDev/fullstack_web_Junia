@@ -20,7 +20,7 @@ export class UserRepository {
 
   public async createUser(user: CreateUserModel): Promise<UserModel> {
     // 1️⃣ Hash password before saving
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+
     const hashedPassword: string = await bcrypt.hash(user.password, 10);
 
     const entity = this.userRepository.create({
@@ -48,7 +48,6 @@ export class UserRepository {
 
   public async updateUser(id: UserId, data: Partial<CreateUserModel>) {
     if (data.password) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       data.password = await bcrypt.hash(data.password, 10);
     }
     await this.userRepository.update(id, data);

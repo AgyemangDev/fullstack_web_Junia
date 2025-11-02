@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { BookFormModal } from "./BookFormModal";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { useState } from 'react'
+import { BookFormModal } from './BookFormModal'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import type { CreateBookModel } from '../BookModel'
 
+interface CreateBookButtonProps {
+  onCreate: (book: CreateBookModel) => void
+}
 
-export function CreateBookButton({ onCreate }) {
-  const [open, setOpen] = useState(false);
+export function CreateBookButton({ onCreate }: CreateBookButtonProps) {
+  const [open, setOpen] = useState(false)
 
   return (
     <>
@@ -28,5 +32,5 @@ export function CreateBookButton({ onCreate }) {
         mode="create"
       />
     </>
-  );
+  )
 }

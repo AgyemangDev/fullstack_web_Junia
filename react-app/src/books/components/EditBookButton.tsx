@@ -39,7 +39,7 @@ export function EditBookButton({ book, onUpdate }: EditBookButtonProps) {
         mode="edit"
         initialData={{
           ...book,
-          description: book.description ?? undefined
+          description: book.description ?? undefined,
         }}
       />
     </>

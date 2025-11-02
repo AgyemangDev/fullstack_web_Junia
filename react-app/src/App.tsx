@@ -1,16 +1,25 @@
 import { Link } from '@tanstack/react-router'
-import { Row, Col, Card, Typography, Space, Button } from 'antd'
+import { Row, Col, Card, Typography } from 'antd'
 import { Route as booksRoute } from './routes/books/index'
-import { Route as authorsRoute } from './routes/authors'
-import { Route as salesRoute } from './routes/sales'
-import { BookOutlined, TeamOutlined, ShoppingCartOutlined } from '@ant-design/icons'
+import { Route as authorsRoute } from './routes/authors/index'
+import { Route as salesRoute } from './routes/sales/index'
+import {
+  BookOutlined,
+  TeamOutlined,
+  ShoppingCartOutlined,
+} from '@ant-design/icons'
 import './App.css'
 
 const { Title, Paragraph } = Typography
 
 function App() {
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%)' }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%)',
+      }}
+    >
       {/* Hero Section */}
       <div
         style={{
@@ -29,7 +38,7 @@ function App() {
             fontWeight: 700,
           }}
         >
-          Babel's Library
+          Babel&apos;s Library
         </Title>
         <Paragraph
           style={{
@@ -44,7 +53,9 @@ function App() {
       </div>
 
       {/* Features Section */}
-      <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <div
+        style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}
+      >
         <Title
           level={2}
           style={{
@@ -59,10 +70,7 @@ function App() {
         <Row gutter={[32, 32]} style={{ marginBottom: '4rem' }}>
           {/* Books Card */}
           <Col xs={24} sm={12} lg={8}>
-            <Link
-              to={booksRoute.to}
-              style={{ textDecoration: 'none' }}
-            >
+            <Link to={booksRoute.to} style={{ textDecoration: 'none' }}>
               <Card
                 hoverable
                 style={{
@@ -87,7 +95,10 @@ function App() {
                 >
                   <BookOutlined />
                 </div>
-                <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
+                <Title
+                  level={3}
+                  style={{ color: '#395E66', marginBottom: '1rem' }}
+                >
                   Catalog
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
@@ -99,10 +110,7 @@ function App() {
 
           {/* Authors Card */}
           <Col xs={24} sm={12} lg={8}>
-            <Link
-              to={authorsRoute.to}
-              style={{ textDecoration: 'none' }}
-            >
+            <Link to={authorsRoute.to} style={{ textDecoration: 'none' }}>
               <Card
                 hoverable
                 style={{
@@ -127,7 +135,10 @@ function App() {
                 >
                   <TeamOutlined />
                 </div>
-                <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
+                <Title
+                  level={3}
+                  style={{ color: '#395E66', marginBottom: '1rem' }}
+                >
                   Authors
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
@@ -139,10 +150,7 @@ function App() {
 
           {/* Sales Card */}
           <Col xs={24} sm={12} lg={8}>
-            <Link
-              to={salesRoute.to}
-              style={{ textDecoration: 'none' }}
-            >
+            <Link to={salesRoute.to} style={{ textDecoration: 'none' }}>
               <Card
                 hoverable
                 style={{
@@ -167,7 +175,10 @@ function App() {
                 >
                   <ShoppingCartOutlined />
                 </div>
-                <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
+                <Title
+                  level={3}
+                  style={{ color: '#395E66', marginBottom: '1rem' }}
+                >
                   Loans
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
@@ -189,22 +200,28 @@ function App() {
           <Row gutter={[32, 32]} align="middle">
             <Col xs={24} md={12}>
               <Title level={2} style={{ color: '#395E66' }}>
-                About Babel's Library
+                About Babel&apos;s Library
               </Title>
-              <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}>
-                Babel's Library is your modern digital library. 
-                We offer easy access to a vast collection of books, 
-                fascinating author biographies and a simplified loan management system.
+              <Paragraph
+                style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}
+              >
+                Babel&apos;s Library is your modern digital library. We offer
+                easy access to a vast collection of books, fascinating author
+                biographies and a simplified loan management system.
               </Paragraph>
-              <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}>
-                Whether you are a passionate reader or an academic researcher, 
-                our platform offers you all the tools you need to explore the world of literature.
+              <Paragraph
+                style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}
+              >
+                Whether you are a passionate reader or an academic researcher,
+                our platform offers you all the tools you need to explore the
+                world of literature.
               </Paragraph>
             </Col>
             <Col xs={24} md={12}>
               <div
                 style={{
-                  background: 'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
+                  background:
+                    'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
                   borderRadius: '12px',
                   padding: '3rem',
                   minHeight: '300px',
@@ -247,8 +264,10 @@ function App() {
           color: 'white',
         }}
       >
-        <Paragraph style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: 0 }}>
-          © 2025 Babel's Library - Your literary journey starts here
+        <Paragraph
+          style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: 0 }}
+        >
+          © 2025 Babel&apos;s Library - Your literary journey starts here
         </Paragraph>
       </div>
     </div>

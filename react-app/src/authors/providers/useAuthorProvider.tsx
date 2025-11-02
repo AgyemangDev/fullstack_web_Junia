@@ -21,7 +21,7 @@ export interface CreateAuthor {
 }
 
 // Interface pour mettre à jour un auteur
-export interface UpdateAuthor extends Partial<CreateAuthor> {}
+export type UpdateAuthor = Partial<CreateAuthor>
 
 // Provider pour gérer les auteurs
 export const useAuthorProvider = () => {
@@ -75,4 +75,3 @@ export const useAuthorProvider = () => {
     deleteAuthor,
   }
 }
-

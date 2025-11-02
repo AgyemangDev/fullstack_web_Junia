@@ -13,8 +13,12 @@ export function BookList() {
   const { books, loadBooks, createBook } = useBookProvider()
   const { user } = useAuth()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined)
-  const [availableFilter, setAvailableFilter] = useState<boolean | undefined>(undefined)
+  const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
+    undefined,
+  )
+  const [availableFilter, setAvailableFilter] = useState<boolean | undefined>(
+    undefined,
+  )
 
   // Vérifier si l'utilisateur est bibliothécaire
   const isLibrarian = user?.role === 'librarian'
@@ -31,10 +35,11 @@ export function BookList() {
       `${book.author.firstName} ${book.author.lastName}`
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
-    
+
     // Gérer le cas où selectedGenre est une chaîne vide (tous les genres)
-    const matchesGenre = !selectedGenre || selectedGenre === '' || book.genre === selectedGenre
-    
+    const matchesGenre =
+      !selectedGenre || selectedGenre === '' || book.genre === selectedGenre
+
     const matchesAvailability =
       availableFilter === undefined || book.isAvailable === availableFilter
 
@@ -64,9 +69,7 @@ export function BookList() {
         >
           Book Catalog
         </Title>
-        {isLibrarian && (
-          <CreateBookButton onCreate={createBook} />
-        )}
+        {isLibrarian && <CreateBookButton onCreate={createBook} />}
       </div>
 
       {/* Top bar with search and filters */}
@@ -85,7 +88,9 @@ export function BookList() {
       <Row gutter={[16, 16]} style={{ padding: '0 2rem 1rem 2rem' }}>
         <Col xs={24} sm={12} md={8}>
           <Space>
-            <span style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}>
+            <span
+              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
+            >
               Genre:
             </span>
             <Select
@@ -107,7 +112,9 @@ export function BookList() {
 
         <Col xs={24} sm={12} md={8}>
           <Space>
-            <span style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}>
+            <span
+              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
+            >
               Availability:
             </span>
             <Select
@@ -132,13 +139,7 @@ export function BookList() {
       ) : (
         <Row gutter={[16, 16]} style={{ padding: '0 1.5rem 2rem 1.5rem' }}>
           {filteredBooks.map((book: BookModel) => (
-            <Col
-              key={book.id}
-              xs={24}
-              sm={12}
-              md={8}
-              lg={6}
-            >
+            <Col key={book.id} xs={24} sm={12} md={8} lg={6}>
               <BookListItem book={book} />
             </Col>
           ))}

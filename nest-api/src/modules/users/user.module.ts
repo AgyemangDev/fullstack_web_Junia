@@ -13,7 +13,9 @@ import { JwtStrategy } from './jwt.strategy';
     TypeOrmModule.forFeature([UserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'babel-library-secret-key-change-in-production',
+      secret:
+        process.env.JWT_SECRET ||
+        'babel-library-secret-key-change-in-production',
       signOptions: { expiresIn: '24h' },
     }),
   ],

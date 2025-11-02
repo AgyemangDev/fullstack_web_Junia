@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
 import type { CreateBookModel, UpdateBookModel } from '../BookModel'
 import { BookGenre } from '../BookModel'
-import { Input, Modal, Select, Space, InputNumber, Switch, Typography } from 'antd'
+import {
+  Input,
+  Modal,
+  Select,
+  Space,
+  InputNumber,
+  Switch,
+  Typography,
+} from 'antd'
 import { useBookAuthorsProviders } from '../providers/useBookAuthorsProviders'
 
 interface BookFormModalProps {
@@ -21,20 +29,20 @@ export function BookFormModal({
 }: BookFormModalProps) {
   const [title, setTitle] = useState(initialData.title || '')
   const [yearPublished, setYearPublished] = useState<number | undefined>(
-    initialData.yearPublished
+    initialData.yearPublished,
   )
   const [authorId, setAuthorId] = useState<string | undefined>(
-    initialData.authorId
+    initialData.authorId,
   )
   const [genre, setGenre] = useState<keyof typeof BookGenre | undefined>(
     (Object.keys(BookGenre).find(
-      k => BookGenre[k as keyof typeof BookGenre] === initialData.genre
-    ) as keyof typeof BookGenre) ?? undefined
+      k => BookGenre[k as keyof typeof BookGenre] === initialData.genre,
+    ) as keyof typeof BookGenre) ?? undefined,
   )
   const [photoUrl, setPhotoUrl] = useState(initialData.photoUrl || '')
   const [description, setDescription] = useState(initialData.description || '')
   const [isAvailable, setIsAvailable] = useState(
-    initialData.isAvailable ?? true
+    initialData.isAvailable ?? true,
   )
   const [price, setPrice] = useState<number | undefined>(initialData.price)
 
@@ -51,8 +59,8 @@ export function BookFormModal({
       setAuthorId(initialData.authorId)
       setGenre(
         (Object.keys(BookGenre).find(
-          k => BookGenre[k as keyof typeof BookGenre] === initialData.genre
-        ) as keyof typeof BookGenre) ?? undefined
+          k => BookGenre[k as keyof typeof BookGenre] === initialData.genre,
+        ) as keyof typeof BookGenre) ?? undefined,
       )
       setPhotoUrl(initialData.photoUrl || '')
       setDescription(initialData.description || '')
@@ -90,10 +98,7 @@ export function BookFormModal({
   return (
     <Modal
       title={
-        <Typography.Title
-          level={4}
-          style={{ color: '#395E66', margin: 0 }}
-        >
+        <Typography.Title level={4} style={{ color: '#395E66', margin: 0 }}>
           {mode === 'create' ? 'Create a New Book' : 'Edit Book'}
         </Typography.Title>
       }

@@ -4,7 +4,6 @@ import {
   Row,
   Col,
   Button,
-  Space,
   Modal,
   Form,
   Input,
@@ -81,7 +80,7 @@ export function AuthorsPage() {
       }
       setIsModalOpen(false)
       form.resetFields()
-    } catch (error) {
+    } catch {
       message.error('Error saving')
     }
   }
@@ -90,7 +89,7 @@ export function AuthorsPage() {
     try {
       await deleteAuthor(id)
       message.success('Author deleted successfully')
-    } catch (error) {
+    } catch {
       message.error('Error deleting')
     }
   }
@@ -151,7 +150,11 @@ export function AuthorsPage() {
                   <img
                     alt={author.firstName}
                     src={author.photo}
-                    style={{ height: 200, objectFit: 'cover', borderRadius: '12px 12px 0 0' }}
+                    style={{
+                      height: 200,
+                      objectFit: 'cover',
+                      borderRadius: '12px 12px 0 0',
+                    }}
                   />
                 ) : (
                   <div
@@ -160,11 +163,17 @@ export function AuthorsPage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      background: 'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
+                      background:
+                        'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
                       borderRadius: '12px 12px 0 0',
                     }}
                   >
-                    <UserOutlined style={{ fontSize: 64, color: 'rgba(255, 255, 255, 0.3)' }} />
+                    <UserOutlined
+                      style={{
+                        fontSize: 64,
+                        color: 'rgba(255, 255, 255, 0.3)',
+                      }}
+                    />
                   </div>
                 )
               }
@@ -187,11 +196,7 @@ export function AuthorsPage() {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button
-                          type="text"
-                          danger
-                          icon={<DeleteOutlined />}
-                        >
+                        <Button type="text" danger icon={<DeleteOutlined />}>
                           Delete
                         </Button>
                       </Popconfirm>,
@@ -201,7 +206,13 @@ export function AuthorsPage() {
             >
               <Card.Meta
                 title={
-                  <div style={{ color: '#395E66', fontSize: '1.1rem', fontWeight: 600 }}>
+                  <div
+                    style={{
+                      color: '#395E66',
+                      fontSize: '1.1rem',
+                      fontWeight: 600,
+                    }}
+                  >
                     {`${author.firstName} ${author.lastName}`}
                   </div>
                 }
@@ -229,10 +240,7 @@ export function AuthorsPage() {
 
       <Modal
         title={
-          <Title
-            level={4}
-            style={{ color: '#395E66', margin: 0 }}
-          >
+          <Title level={4} style={{ color: '#395E66', margin: 0 }}>
             {editingAuthor ? 'Edit Author' : 'Create Author'}
           </Title>
         }
@@ -272,24 +280,15 @@ export function AuthorsPage() {
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="Nationality"
-            name="nationality"
-          >
+          <Form.Item label="Nationality" name="nationality">
             <Input placeholder="Ex: French" />
           </Form.Item>
 
-          <Form.Item
-            label="Biography"
-            name="biography"
-          >
+          <Form.Item label="Biography" name="biography">
             <Input.TextArea rows={4} placeholder="Author biography..." />
           </Form.Item>
 
-          <Form.Item
-            label="Photo URL"
-            name="photo"
-          >
+          <Form.Item label="Photo URL" name="photo">
             <Input placeholder="https://..." />
           </Form.Item>
         </Form>
@@ -297,4 +296,3 @@ export function AuthorsPage() {
     </div>
   )
 }
-

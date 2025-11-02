@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
   Card,
-  Row,
-  Space,
   Modal,
   Form,
   Select,
@@ -12,13 +10,11 @@ import {
   Typography,
   Table,
 } from 'antd'
-import {
-  DeleteOutlined,
-  ShoppingCartOutlined,
-} from '@ant-design/icons'
-import { useSaleProvider } from '../providers/useSaleProvider'
+import { DeleteOutlined, ShoppingCartOutlined } from '@ant-design/icons'
+import { useSaleProvider, type Sale } from '../providers/useSaleProvider'
 import { useAuth } from '../../auth/AuthContext'
 import { useBookProvider } from '../../books/providers/useBookProvider'
+import type { BookModel } from '../../books/BookModel'
 
 const { Title } = Typography
 
@@ -29,7 +25,7 @@ export function SalesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
-  const [availableBooks, setAvailableBooks] = useState<any[]>([])
+  const [availableBooks, setAvailableBooks] = useState<BookModel[]>([])
 
   // Check if user is librarian
   const isLibrarian = user?.role === 'librarian'
@@ -63,7 +59,7 @@ export function SalesPage() {
       form.resetFields()
       loadSales()
       loadBooks()
-    } catch (error) {
+    } catch {
       message.error('Error recording sale')
     } finally {
       setLoading(false)
@@ -74,7 +70,7 @@ export function SalesPage() {
     try {
       await deleteSale(id)
       message.success('Sale deleted successfully')
-    } catch (error) {
+    } catch {
       message.error('Error deleting')
     }
   }
@@ -89,7 +85,7 @@ export function SalesPage() {
     {
       title: 'Book',
       key: 'book',
-      render: (_: any, record: any) =>
+      render: (_: unknown, record: Sale) =>
         record.book
           ? `${record.book.title}${record.book.author ? ` - ${record.book.author.firstName} ${record.book.author.lastName}` : ''}`
           : 'Book not found',
@@ -97,7 +93,7 @@ export function SalesPage() {
     {
       title: 'User',
       key: 'user',
-      render: (_: any, record: any) =>
+      render: (_: unknown, record: Sale) =>
         record.user
           ? `${record.user.firstName} ${record.user.lastName}`
           : 'User not found',
@@ -107,7 +103,7 @@ export function SalesPage() {
           {
             title: 'Action',
             key: 'action',
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: Sale) => (
               <Popconfirm
                 title="Delete sale"
                 description="Are you sure you want to delete this sale?"
@@ -181,10 +177,7 @@ export function SalesPage() {
 
       <Modal
         title={
-          <Title
-            level={4}
-            style={{ color: '#395E66', margin: 0 }}
-          >
+          <Title level={4} style={{ color: '#395E66', margin: 0 }}>
             New Sale
           </Title>
         }
@@ -233,4 +226,3 @@ export function SalesPage() {
     </div>
   )
 }
-

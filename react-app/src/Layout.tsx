@@ -3,9 +3,9 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as indexRoute } from './routes/index'
 import { Route as aboutRoute } from './routes/about'
 import { Route as booksRoute } from './routes/books/index'
-import { Route as authorsRoute } from './routes/authors'
-import { Route as salesRoute } from './routes/sales'
-import { Route as loginRoute } from './routes/auth/login'
+import { Route as authorsRoute } from './routes/authors/index'
+import { Route as salesRoute } from './routes/sales/index'
+import { Route as loginRoute } from './routes/login'
 import { Space, Menu, Drawer, Button, Grid } from 'antd'
 import {
   BookOutlined,
@@ -84,7 +84,13 @@ export function Layout({ children }: LayoutProps) {
               <Menu mode="horizontal" items={items} theme="dark" />
               {isAuthenticated ? (
                 <Space>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
                     <UserOutlined />
                     {user?.firstName} {user?.lastName}
                   </span>

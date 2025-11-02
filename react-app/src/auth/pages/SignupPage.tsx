@@ -1,6 +1,15 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Form, Input, Button, Card, Typography, Alert, Space, Select } from 'antd'
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Typography,
+  Alert,
+  Space,
+  Select,
+} from 'antd'
 import { useAuth } from '../AuthContext'
 
 const { Title } = Typography
@@ -27,10 +36,10 @@ export function SignupPage() {
         values.lastName,
         values.email,
         values.password,
-        values.role
+        values.role,
       )
       // Redirect to login page after successful signup
-      navigate({ to: '/auth/login' })
+      navigate({ to: '/login' })
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Signup error')
     } finally {
@@ -116,9 +125,7 @@ export function SignupPage() {
             <Form.Item
               label="Role"
               name="role"
-              rules={[
-                { required: true, message: 'Please select a role' },
-              ]}
+              rules={[{ required: true, message: 'Please select a role' }]}
             >
               <Select size="large">
                 <Select.Option value="member">Member</Select.Option>
@@ -143,7 +150,7 @@ export function SignupPage() {
             Already have an account?{' '}
             <Button
               type="link"
-              onClick={() => navigate({ to: '/auth/login' })}
+              onClick={() => navigate({ to: '/login' })}
               style={{ padding: 0 }}
             >
               Sign in
@@ -154,4 +161,3 @@ export function SignupPage() {
     </div>
   )
 }
-

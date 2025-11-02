@@ -27,7 +27,7 @@ function About() {
             marginBottom: '3rem',
           }}
         >
-          About Babel's Library
+          About Babel&apos;s Library
         </Title>
 
         <Row gutter={[32, 32]} style={{ marginBottom: '3rem' }}>
@@ -43,12 +43,15 @@ function About() {
                 Our Mission
               </Title>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Babel's Library was created to provide modern and easy access to a vast collection of books.
-                We believe that reading is essential for education, personal fulfillment and cultural development.
+                Babel&apos;s Library was created to provide modern and easy
+                access to a vast collection of books. We believe that reading is
+                essential for education, personal fulfillment and cultural
+                development.
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Our digital platform allows everyone to discover new books, explore different literary genres,
-                and easily manage their loans in a friendly and professional environment.
+                Our digital platform allows everyone to discover new books,
+                explore different literary genres, and easily manage their loans
+                in a friendly and professional environment.
               </Paragraph>
             </Card>
           </Col>
@@ -92,9 +95,12 @@ function About() {
           <Title level={2} style={{ color: 'white', marginBottom: '1rem' }}>
             Contact Us
           </Title>
-          <Paragraph style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem' }}>
-            For any questions or suggestions, please do not hesitate to contact us.
-            We are here to help you get the most out of your literary experience.
+          <Paragraph
+            style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem' }}
+          >
+            For any questions or suggestions, please do not hesitate to contact
+            us. We are here to help you get the most out of your literary
+            experience.
           </Paragraph>
         </Card>
       </div>
