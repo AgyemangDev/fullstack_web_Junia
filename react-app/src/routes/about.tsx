@@ -27,7 +27,7 @@ function About() {
             marginBottom: '3rem',
           }}
         >
-          À Propos de Babel's Library
+          About Babel's Library
         </Title>
 
         <Row gutter={[32, 32]} style={{ marginBottom: '3rem' }}>
@@ -40,15 +40,15 @@ function About() {
               }}
             >
               <Title level={2} style={{ color: '#395E66' }}>
-                Notre Mission
+                Our Mission
               </Title>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Babel's Library a été créée pour offrir un accès moderne et facile à une vaste collection de livres.
-                Nous croyons que la lecture est essentielle pour l'éducation, l'épanouissement personnel et le développement culturel.
+                Babel's Library was created to provide modern and easy access to a vast collection of books.
+                We believe that reading is essential for education, personal fulfillment and cultural development.
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Notre plateforme numérique permet à tous de découvrir de nouveaux livres, d'explorer différents genres littéraires,
-                et de gérer facilement leurs emprunts dans un environnement convivial et professionnel.
+                Our digital platform allows everyone to discover new books, explore different literary genres,
+                and easily manage their loans in a friendly and professional environment.
               </Paragraph>
             </Card>
           </Col>
@@ -62,19 +62,19 @@ function About() {
               }}
             >
               <Title level={2} style={{ color: '#395E66' }}>
-                Nos Services
+                Our Services
               </Title>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                - Catalogue complet de livres avec recherche avancée
+                - Complete book catalog with advanced search
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                - Informations détaillées sur les auteurs et leurs biographies
+                - Detailed information about authors and their biographies
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                - Système de gestion d'emprunts simple et efficace
+                - Simple and efficient loan management system
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                - Interface moderne et intuitive pour une expérience optimale
+                - Modern and intuitive interface for an optimal experience
               </Paragraph>
             </Card>
           </Col>
@@ -90,11 +90,11 @@ function About() {
           }}
         >
           <Title level={2} style={{ color: 'white', marginBottom: '1rem' }}>
-            Contactez-nous
+            Contact Us
           </Title>
           <Paragraph style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem' }}>
-            Pour toute question ou suggestion, n'hésitez pas à nous contacter.
-            Nous sommes là pour vous aider à tirer le meilleur parti de votre expérience littéraire.
+            For any questions or suggestions, please do not hesitate to contact us.
+            We are here to help you get the most out of your literary experience.
           </Paragraph>
         </Card>
       </div>

@@ -39,7 +39,7 @@ function App() {
             margin: '0 auto',
           }}
         >
-          Découvrez un monde de savoir et de magie littéraire
+          Discover a world of knowledge and literary magic
         </Paragraph>
       </div>
 
@@ -53,7 +53,7 @@ function App() {
             color: '#395E66',
           }}
         >
-          Explorez Notre Collection
+          Explore Our Collection
         </Title>
 
         <Row gutter={[32, 32]} style={{ marginBottom: '4rem' }}>
@@ -88,10 +88,10 @@ function App() {
                   <BookOutlined />
                 </div>
                 <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
-                  Catalogue
+                  Catalog
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
-                  Parcourez notre vaste collection de livres de tous genres
+                  Browse our vast collection of books from all genres
                 </Paragraph>
               </Card>
             </Link>
@@ -128,10 +128,10 @@ function App() {
                   <TeamOutlined />
                 </div>
                 <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
-                  Auteurs
+                  Authors
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
-                  Découvrez les auteurs et leurs biographies
+                  Discover authors and their biographies
                 </Paragraph>
               </Card>
             </Link>
@@ -168,10 +168,10 @@ function App() {
                   <ShoppingCartOutlined />
                 </div>
                 <Title level={3} style={{ color: '#395E66', marginBottom: '1rem' }}>
-                  Emprunts
+                  Loans
                 </Title>
                 <Paragraph style={{ color: '#666' }}>
-                  Gérez vos emprunts et découvrez nos services
+                  Manage your loans and discover our services
                 </Paragraph>
               </Card>
             </Link>
@@ -189,16 +189,16 @@ function App() {
           <Row gutter={[32, 32]} align="middle">
             <Col xs={24} md={12}>
               <Title level={2} style={{ color: '#395E66' }}>
-                À Propos de Babel's Library
+                About Babel's Library
               </Title>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}>
-                Babel's Library est votre bibliothèque moderne et numérique. 
-                Nous offrons un accès facile à une vaste collection de livres, 
-                des biographies d'auteurs fascinants et un système de gestion d'emprunts simplifié.
+                Babel's Library is your modern digital library. 
+                We offer easy access to a vast collection of books, 
+                fascinating author biographies and a simplified loan management system.
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#555' }}>
-                Que vous soyez un lecteur passionné ou un chercheur académique, 
-                notre plateforme vous offre tous les outils nécessaires pour explorer le monde de la littérature.
+                Whether you are a passionate reader or an academic researcher, 
+                our platform offers you all the tools you need to explore the world of literature.
               </Paragraph>
             </Col>
             <Col xs={24} md={12}>
@@ -229,7 +229,7 @@ function App() {
                       fontSize: '1.2rem',
                     }}
                   >
-                    Un nombre infini de possibilités littéraires
+                    Infinite literary possibilities
                   </Paragraph>
                 </div>
               </div>
@@ -248,7 +248,7 @@ function App() {
         }}
       >
         <Paragraph style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: 0 }}>
-          © 2025 Babel's Library - Votre voyage littéraire commence ici
+          © 2025 Babel's Library - Your literary journey starts here
         </Paragraph>
       </div>
     </div>

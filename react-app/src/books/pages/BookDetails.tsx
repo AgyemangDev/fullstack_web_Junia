@@ -56,11 +56,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   const handleDelete = () => {
     console.log('Opening delete confirmation for:', id)
     Modal.confirm({
-      title: 'Supprimer le livre',
-      content: `Êtes-vous sûr de vouloir supprimer "${book?.title}" ?`,
-      okText: 'Supprimer',
+      title: 'Delete book',
+      content: `Are you sure you want to delete "${book?.title}"?`,
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: 'Annuler',
+      cancelText: 'Cancel',
       onOk: async () => {
         await onDelete(id)
         navigate({ to: booksRoute.to })
@@ -89,7 +89,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   if (!book) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <Text>Aucun livre trouvé.</Text>
+        <Text>No book found.</Text>
       </div>
     )
   }
@@ -125,7 +125,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
             textDecoration: 'none',
           }}
         >
-          <ArrowLeftOutlined /> Retour à la liste
+          <ArrowLeftOutlined /> Back to list
         </Link>
 
         {isEditing ? (
@@ -140,14 +140,14 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                 borderColor: '#395E66',
               }}
             >
-              Sauvegarder
+              Save
             </Button>
             <Button
               icon={<CloseOutlined />}
               onClick={handleCancel}
               size="middle"
             >
-              Annuler
+              Cancel
             </Button>
           </Space>
         ) : (
@@ -159,7 +159,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               onClick={handleDelete}
               size="middle"
             >
-              Supprimer
+              Delete
             </Button>
           </Space>
         )}
@@ -201,7 +201,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                   borderRadius: '8px',
                 }}
               >
-                <Text type="secondary">Pas de couverture disponible</Text>
+                <Text type="secondary">No cover available</Text>
               </div>
             )}
 
@@ -219,11 +219,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                   >
                     {book.isAvailable ? (
                       <>
-                        <CheckCircleOutlined /> Disponible
+                        <CheckCircleOutlined /> Available
                       </>
                     ) : (
                       <>
-                        <CloseCircleOutlined /> Non disponible
+                        <CloseCircleOutlined /> Not available
                       </>
                     )}
                   </span>
@@ -276,7 +276,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                 {book.genre}
               </Tag>
               <Text type="secondary" style={{ fontSize: '16px' }}>
-                Publié en {book.yearPublished}
+                Published in {book.yearPublished}
               </Text>
             </div>
 
@@ -301,7 +301,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
             {/* Author Section */}
             <div>
               <Title level={4} style={{ color: '#395E66' }}>
-                À propos de l'auteur
+                About the author
               </Title>
               <Title
                 level={5}

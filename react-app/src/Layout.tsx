@@ -5,7 +5,7 @@ import { Route as aboutRoute } from './routes/about'
 import { Route as booksRoute } from './routes/books/index'
 import { Route as authorsRoute } from './routes/authors'
 import { Route as salesRoute } from './routes/sales'
-import { Route as loginRoute } from './routes/login'
+import { Route as loginRoute } from './routes/auth/login'
 import { Space, Menu, Drawer, Button, Grid } from 'antd'
 import {
   BookOutlined,
@@ -94,7 +94,7 @@ export function Layout({ children }: LayoutProps) {
                     onClick={handleLogout}
                     style={{ color: 'white' }}
                   >
-                    Déconnexion
+                    Logout
                   </Button>
                 </Space>
               ) : (
@@ -102,7 +102,7 @@ export function Layout({ children }: LayoutProps) {
                   type="default"
                   onClick={() => navigate({ to: loginRoute.to })}
                 >
-                  Connexion
+                  Login
                 </Button>
               )}
             </>
@@ -127,7 +127,7 @@ export function Layout({ children }: LayoutProps) {
                         <UserOutlined /> {user?.firstName} {user?.lastName}
                       </div>
                       <Button onClick={handleLogout} block>
-                        Déconnexion
+                        Logout
                       </Button>
                     </Space>
                   </div>

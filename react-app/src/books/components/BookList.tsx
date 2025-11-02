@@ -62,7 +62,7 @@ export function BookList() {
             margin: 0,
           }}
         >
-          Catalogue des Livres
+          Book Catalog
         </Title>
         {isLibrarian && (
           <CreateBookButton onCreate={createBook} />
@@ -89,13 +89,13 @@ export function BookList() {
               Genre:
             </span>
             <Select
-              placeholder="Tous les genres"
+              placeholder="All genres"
               allowClear
               style={{ width: 200 }}
               value={selectedGenre}
               onChange={setSelectedGenre}
             >
-              <Select.Option value="">Tous les genres</Select.Option>
+              <Select.Option value="">All genres</Select.Option>
               {Object.entries(BookGenre).map(([key, value]) => (
                 <Select.Option key={key} value={value}>
                   {value}
@@ -108,17 +108,17 @@ export function BookList() {
         <Col xs={24} sm={12} md={8}>
           <Space>
             <span style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}>
-              Disponibilité:
+              Availability:
             </span>
             <Select
-              placeholder="Tous"
+              placeholder="All"
               allowClear
               style={{ width: 150 }}
               value={availableFilter}
               onChange={setAvailableFilter}
             >
-              <Select.Option value={true}>Disponible</Select.Option>
-              <Select.Option value={false}>Emprunté</Select.Option>
+              <Select.Option value={true}>Available</Select.Option>
+              <Select.Option value={false}>Borrowed</Select.Option>
             </Select>
           </Space>
         </Col>
@@ -127,7 +127,7 @@ export function BookList() {
       {/* Book list */}
       {filteredBooks.length === 0 ? (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '1.2rem', color: '#666' }}>Aucun livre trouvé</p>
+          <p style={{ fontSize: '1.2rem', color: '#666' }}>No books found</p>
         </div>
       ) : (
         <Row gutter={[16, 16]} style={{ padding: '0 1.5rem 2rem 1.5rem' }}>

@@ -1,15 +1,11 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Form, Input, Button, Card, Typography, Alert, Space, Select } from 'antd'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../AuthContext'
 
 const { Title } = Typography
 
-export const Route = createFileRoute('/signup')({
-  component: SignupPage,
-})
-
-function SignupPage() {
+export function SignupPage() {
   const navigate = useNavigate()
   const { signup } = useAuth()
   const [loading, setLoading] = useState(false)
@@ -33,10 +29,10 @@ function SignupPage() {
         values.password,
         values.role
       )
-      // Rediriger vers la page de connexion après inscription réussie
-      navigate({ to: '/login' })
+      // Redirect to login page after successful signup
+      navigate({ to: '/auth/login' })
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de l\'inscription')
+      setError(err instanceof Error ? err.message : 'Signup error')
     } finally {
       setLoading(false)
     }
@@ -55,12 +51,12 @@ function SignupPage() {
       <Card style={{ width: '100%', maxWidth: 400 }}>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 0 }}>
-            Inscription
+            Sign Up
           </Title>
 
           {error && (
             <Alert
-              message="Erreur"
+              message="Error"
               description={error}
               type="error"
               showIcon
@@ -76,57 +72,57 @@ function SignupPage() {
             requiredMark={false}
           >
             <Form.Item
-              label="Prénom"
+              label="First Name"
               name="firstName"
               rules={[
-                { required: true, message: 'Veuillez entrer votre prénom' },
+                { required: true, message: 'Please enter your first name' },
               ]}
             >
-              <Input placeholder="Jean" size="large" />
+              <Input placeholder="John" size="large" />
             </Form.Item>
 
             <Form.Item
-              label="Nom"
+              label="Last Name"
               name="lastName"
               rules={[
-                { required: true, message: 'Veuillez entrer votre nom' },
+                { required: true, message: 'Please enter your last name' },
               ]}
             >
-              <Input placeholder="Dupont" size="large" />
+              <Input placeholder="Doe" size="large" />
             </Form.Item>
 
             <Form.Item
               label="Email"
               name="email"
               rules={[
-                { required: true, message: 'Veuillez entrer votre email' },
-                { type: 'email', message: 'Email invalide' },
+                { required: true, message: 'Please enter your email' },
+                { type: 'email', message: 'Invalid email' },
               ]}
             >
-              <Input placeholder="votre@email.com" size="large" />
+              <Input placeholder="your@email.com" size="large" />
             </Form.Item>
 
             <Form.Item
-              label="Mot de passe"
+              label="Password"
               name="password"
               rules={[
-                { required: true, message: 'Veuillez entrer un mot de passe' },
-                { min: 6, message: 'Le mot de passe doit contenir au moins 6 caractères' },
+                { required: true, message: 'Please enter a password' },
+                { min: 6, message: 'Password must be at least 6 characters' },
               ]}
             >
               <Input.Password placeholder="••••••••" size="large" />
             </Form.Item>
 
             <Form.Item
-              label="Rôle"
+              label="Role"
               name="role"
               rules={[
-                { required: true, message: 'Veuillez sélectionner un rôle' },
+                { required: true, message: 'Please select a role' },
               ]}
             >
               <Select size="large">
-                <Select.Option value="member">Membre</Select.Option>
-                <Select.Option value="librarian">Bibliothécaire</Select.Option>
+                <Select.Option value="member">Member</Select.Option>
+                <Select.Option value="librarian">Librarian</Select.Option>
               </Select>
             </Form.Item>
 
@@ -138,19 +134,19 @@ function SignupPage() {
                 size="large"
                 block
               >
-                S'inscrire
+                Sign up
               </Button>
             </Form.Item>
           </Form>
 
           <div style={{ textAlign: 'center' }}>
-            Déjà un compte ?{' '}
+            Already have an account?{' '}
             <Button
               type="link"
-              onClick={() => navigate({ to: '/login' })}
+              onClick={() => navigate({ to: '/auth/login' })}
               style={{ padding: 0 }}
             >
-              Se connecter
+              Sign in
             </Button>
           </div>
         </Space>
@@ -158,3 +154,4 @@ function SignupPage() {
     </div>
   )
 }
+

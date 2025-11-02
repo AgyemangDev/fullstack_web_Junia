@@ -55,7 +55,7 @@ export function BookListItem({ book }: BookListItemProps) {
 
           {/* Availability Badge at Top */}
           <Badge.Ribbon
-            text={book.isAvailable ? 'Disponible' : 'Emprunté'}
+            text={book.isAvailable ? 'Available' : 'Borrowed'}
             color={book.isAvailable ? 'green' : 'red'}
             style={{ top: 10, right: -5 }}
           />

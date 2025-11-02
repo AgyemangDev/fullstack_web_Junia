@@ -18,7 +18,7 @@ export function CreateBookButton({ onCreate }) {
           borderColor: '#395E66',
         }}
       >
-        Ajouter un Livre
+        Add a Book
       </Button>
 
       <BookFormModal

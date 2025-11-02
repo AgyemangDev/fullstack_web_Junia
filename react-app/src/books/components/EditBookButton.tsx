@@ -29,7 +29,7 @@ export function EditBookButton({ book, onUpdate }: EditBookButtonProps) {
           color: 'white',
         }}
       >
-        Modifier
+        Edit
       </Button>
 
       <BookFormModal

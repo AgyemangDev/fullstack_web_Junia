@@ -1,15 +1,11 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Form, Input, Button, Card, Typography, Alert, Space } from 'antd'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../AuthContext'
 
 const { Title } = Typography
 
-export const Route = createFileRoute('/login')({
-  component: LoginPage,
-})
-
-function LoginPage() {
+export function LoginPage() {
   const navigate = useNavigate()
   const { login } = useAuth()
   const [loading, setLoading] = useState(false)
@@ -25,10 +21,10 @@ function LoginPage() {
 
     try {
       await login(values.email, values.password, values.expectedRole)
-      // Rediriger vers la page d'accueil après connexion réussie
+      // Redirect to home page after successful login
       navigate({ to: '/' })
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Erreur de connexion')
+      setError(err instanceof Error ? err.message : 'Login error')
     } finally {
       setLoading(false)
     }
@@ -47,12 +43,12 @@ function LoginPage() {
       <Card style={{ width: '100%', maxWidth: 400 }}>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 0 }}>
-            Connexion
+            Login
           </Title>
 
           {error && (
             <Alert
-              message="Erreur"
+              message="Error"
               description={error}
               type="error"
               showIcon
@@ -71,18 +67,18 @@ function LoginPage() {
               label="Email"
               name="email"
               rules={[
-                { required: true, message: 'Veuillez entrer votre email' },
-                { type: 'email', message: 'Email invalide' },
+                { required: true, message: 'Please enter your email' },
+                { type: 'email', message: 'Invalid email' },
               ]}
             >
-              <Input placeholder="votre@email.com" size="large" />
+              <Input placeholder="your@email.com" size="large" />
             </Form.Item>
 
             <Form.Item
-              label="Mot de passe"
+              label="Password"
               name="password"
               rules={[
-                { required: true, message: 'Veuillez entrer votre mot de passe' },
+                { required: true, message: 'Please enter your password' },
               ]}
             >
               <Input.Password placeholder="••••••••" size="large" />
@@ -96,19 +92,19 @@ function LoginPage() {
                 size="large"
                 block
               >
-                Se connecter
+                Sign in
               </Button>
             </Form.Item>
           </Form>
 
           <div style={{ textAlign: 'center' }}>
-            Pas encore de compte ?{' '}
+            Don't have an account yet?{' '}
             <Button
               type="link"
-              onClick={() => navigate({ to: '/signup' })}
+              onClick={() => navigate({ to: '/auth/signup' })}
               style={{ padding: 0 }}
             >
-              S'inscrire
+              Sign up
             </Button>
           </div>
         </Space>
@@ -116,3 +112,4 @@ function LoginPage() {
     </div>
   )
 }
+

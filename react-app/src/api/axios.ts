@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// Création d'une instance Axios avec une configuration de base
+// Create an Axios instance with base configuration
 const apiClient = axios.create({
   baseURL: 'http://localhost:3000',
   headers: {
@@ -8,14 +8,14 @@ const apiClient = axios.create({
   },
 })
 
-// Intercepteur pour ajouter le token à chaque requête
+// Interceptor to add token to each request
 apiClient.interceptors.request.use(
   (config) => {
-    // Récupérer le token depuis le localStorage
+    // Get the token from localStorage
     const token = localStorage.getItem('token')
     
     if (token) {
-      // Ajouter le token dans le header Authorization
+      // Add the token in the Authorization header
       config.headers.Authorization = `Bearer ${token}`
     }
     
@@ -26,17 +26,17 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Intercepteur pour gérer les erreurs de réponse
+// Interceptor to handle response errors
 apiClient.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
-    // Si l'erreur est 401 (non autorisé), déconnecter l'utilisateur
+    // If the error is 401 (unauthorized), disconnect the user
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      window.location.href = '/login'
+      window.location.href = '/auth/login'
     }
     
     return Promise.reject(error)

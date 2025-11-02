@@ -94,13 +94,13 @@ export function BookFormModal({
           level={4}
           style={{ color: '#395E66', margin: 0 }}
         >
-          {mode === 'create' ? 'Créer un nouveau livre' : 'Modifier le livre'}
+          {mode === 'create' ? 'Create a New Book' : 'Edit Book'}
         </Typography.Title>
       }
       open={open}
       onCancel={onClose}
       onOk={handleSubmit}
-      okText={mode === 'create' ? 'Créer' : 'Mettre à jour'}
+      okText={mode === 'create' ? 'Create' : 'Update'}
       okButtonProps={{
         style: {
           backgroundColor: '#395E66',
@@ -118,12 +118,12 @@ export function BookFormModal({
     >
       <Space direction="vertical" style={{ width: '100%' }}>
         <Input
-          placeholder="Titre du livre"
+          placeholder="Book title"
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
         <Select
-          placeholder="Sélectionner un auteur"
+          placeholder="Select an author"
           style={{ width: '100%' }}
           options={authors.map(author => ({
             label: `${author.firstName} ${author.lastName}`,
@@ -133,13 +133,13 @@ export function BookFormModal({
           onChange={value => setAuthorId(value)}
         />
         <InputNumber
-          placeholder="Année de publication"
+          placeholder="Publication year"
           style={{ width: '100%' }}
           value={yearPublished}
           onChange={value => setYearPublished(value ?? undefined)}
         />
         <Select
-          placeholder="Sélectionner un genre"
+          placeholder="Select a genre"
           style={{ width: '100%' }}
           options={Object.entries(BookGenre).map(([key, value]) => ({
             label: value,
@@ -149,7 +149,7 @@ export function BookFormModal({
           onChange={value => setGenre(value)}
         />
         <Input
-          placeholder="URL de la photo"
+          placeholder="Photo URL"
           value={photoUrl}
           onChange={e => setPhotoUrl(e.target.value)}
         />
@@ -160,14 +160,14 @@ export function BookFormModal({
           rows={3}
         />
         <Space>
-          <span>Disponible:</span>
+          <span>Available:</span>
           <Switch
             checked={isAvailable}
             onChange={checked => setIsAvailable(checked)}
           />
         </Space>
         <InputNumber
-          placeholder="Prix"
+          placeholder="Price"
           style={{ width: '100%' }}
           value={price}
           onChange={value => setPrice(value ?? undefined)}
