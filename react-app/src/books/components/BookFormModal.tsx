@@ -45,6 +45,9 @@ export function BookFormModal({
     initialData.isAvailable ?? true,
   )
   const [price, setPrice] = useState<number | undefined>(initialData.price)
+  const [numberOfBooks, setNumberOfBooks] = useState<number | undefined>(
+    initialData.numberOfBooks ?? 0,
+  )
 
   const { authors, loadAuthors } = useBookAuthorsProviders()
 
@@ -66,6 +69,7 @@ export function BookFormModal({
       setDescription(initialData.description || '')
       setIsAvailable(initialData.isAvailable ?? true)
       setPrice(initialData.price)
+      setNumberOfBooks(initialData.numberOfBooks ?? 0)
     }
   }, [initialData, mode])
 
@@ -90,6 +94,7 @@ export function BookFormModal({
       description,
       isAvailable,
       price,
+      numberOfBooks,
     })
 
     onClose()
@@ -164,8 +169,15 @@ export function BookFormModal({
           onChange={e => setDescription(e.target.value)}
           rows={3}
         />
+        <InputNumber
+          placeholder="Number of books in stock"
+          style={{ width: '100%' }}
+          value={numberOfBooks}
+          onChange={value => setNumberOfBooks(value ?? 0)}
+          min={0}
+        />
         <Space>
-          <span>Available:</span>
+          <span>Available for borrowing:</span>
           <Switch
             checked={isAvailable}
             onChange={checked => setIsAvailable(checked)}
@@ -177,6 +189,8 @@ export function BookFormModal({
           value={price}
           onChange={value => setPrice(value ?? undefined)}
           min={0}
+          prefix="$"
+          precision={2}
         />
       </Space>
     </Modal>

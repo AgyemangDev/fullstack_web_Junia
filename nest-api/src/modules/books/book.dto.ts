@@ -35,6 +35,15 @@ export class CreateBookDto {
   @Min(0)
   price: number;
 
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  @Type(() => Number)
+  numberOfBooks?: number;
+
+  @IsOptional()
+  isAvailable?: boolean;
+
   @IsString()
   @IsOptional()
   description?: string;
@@ -61,9 +70,18 @@ export class UpdateBookDto {
   @IsOptional()
   genre: BookGenre;
 
+  @IsOptional()
+  isAvailable?: boolean;
+
   @IsString()
   @IsOptional()
   photoUrl: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Type(() => Number)
+  numberOfBooks?: number;
 
   @IsInt()
   @Min(0)
@@ -72,9 +90,6 @@ export class UpdateBookDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsOptional()
-  isAvailable?: boolean;
 }
 
 export class GetBooksDto {

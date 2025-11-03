@@ -26,26 +26,17 @@ export class BookRepository {
     input?: FilterBooksModel,
   ): Promise<[BookModel[], number]> {
     this.logger.log('=== Repository getAllBooks called ===');
-    this.logger.log(`Input received: ${JSON.stringify(input)}`);
     const where: FindOptionsWhere<BookEntity> = {};
 
     if (input?.genre !== undefined) {
-      this.logger.log(`Adding genre filter: ${input.genre}`);
       where.genre = input.genre;
     }
 
     if (input?.isAvailable !== undefined) {
-      this.logger.log(`Adding isAvailable filter: ${input.isAvailable}`);
       where.isAvailable = input.isAvailable;
-    } else {
-      this.logger.log(
-        'isAvailable is undefined - NOT filtering by availability',
-      );
     }
 
     const whereClause = Object.keys(where).length > 0 ? where : undefined;
-    this.logger.log(`Where clause: ${JSON.stringify(whereClause)}`);
-    this.logger.log(`Where clause is undefined: ${whereClause === undefined}`);
 
     const queryOptions = {
       take: input?.limit ?? 10,
@@ -55,23 +46,17 @@ export class BookRepository {
       where: whereClause,
     };
 
-    this.logger.log(`Final query options: ${JSON.stringify(queryOptions)}`);
-
     const [books, totalCount] =
       await this.bookRepository.findAndCount(queryOptions);
 
-    this.logger.log(
-      `Query returned ${books.length} books, total count: ${totalCount}`,
-    );
-    // Log first few books to see their isAvailable values
-    books.slice(0, 3).forEach((book, index) => {
-      this.logger.log(
-        `Book ${index + 1}: ${book.title}, isAvailable: ${book.isAvailable}`,
-      );
-    });
-
     return [
-      books.map((book) => ({ ...book, genre: book.genre, price: book.price })),
+      books.map((book) => ({
+        ...book,
+        genre: book.genre,
+        price: book.price,
+        numberOfBooks: book.numberOfBooks ?? 0,
+        isAvailable: (book.numberOfBooks ?? 0) > 0, // derive from stock
+      })),
       totalCount,
     ];
   }
@@ -104,17 +89,23 @@ export class BookRepository {
       where: { id: book.authorId },
     });
 
-    if (!author) {
-      throw new Error('Author not found');
-    }
+    if (!author) throw new Error('Author not found');
 
     const createdBook = await this.bookRepository.save(
-      this.bookRepository.create(book),
+      this.bookRepository.create({
+        ...book,
+        // Default to true if not specified, can be overridden
+        isAvailable: book.isAvailable ?? true,
+        numberOfBooks: book.numberOfBooks ?? 0,
+      }),
     );
-    this.logger.log(
-      `Book created with isAvailable: ${createdBook.isAvailable}`,
-    );
-    return createdBook;
+    return {
+      ...createdBook,
+      author,
+      genre: createdBook.genre,
+      price: createdBook.price,
+      numberOfBooks: createdBook.numberOfBooks,
+    };
   }
 
   public async updateBook(
@@ -126,26 +117,27 @@ export class BookRepository {
       relations: { author: true },
     });
 
-    if (!oldBook) {
-      return undefined;
+    if (!oldBook) return undefined;
+
+    // Update availability automatically if numberOfBooks changes
+    if (book.numberOfBooks !== undefined) {
+      book.isAvailable = book.numberOfBooks > 0;
     }
 
     await this.bookRepository.update(id, book);
 
-    // Retourner le livre mis à jour avec l'auteur
     const updatedBook = await this.bookRepository.findOne({
       where: { id: id as BookId },
       relations: { author: true },
     });
 
-    if (!updatedBook) {
-      return undefined;
-    }
+    if (!updatedBook) return undefined;
 
     return {
       ...updatedBook,
       genre: updatedBook.genre,
       price: updatedBook.price,
+      numberOfBooks: updatedBook.numberOfBooks ?? 0,
     };
   }
 

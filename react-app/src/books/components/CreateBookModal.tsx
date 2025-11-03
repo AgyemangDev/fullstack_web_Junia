@@ -22,6 +22,7 @@ export function CreateBookModal({
   const [description, setDescription] = useState('')
   const [isAvailable, setIsAvailable] = useState(true)
   const [price, setPrice] = useState<number | undefined>()
+  const [numberOfBooks, setNumberOfBooks] = useState<number>(0)
 
   const { authors, loadAuthors } = useBookAuthorsProviders()
 
@@ -34,6 +35,7 @@ export function CreateBookModal({
     setDescription('')
     setIsAvailable(true)
     setPrice(undefined)
+    setNumberOfBooks(0)
     setIsOpen(false)
   }
 
@@ -57,11 +59,12 @@ export function CreateBookModal({
       title,
       yearPublished,
       authorId,
-      genre: BookGenre[genre], // ✅ Map key to enum value
+      genre: BookGenre[genre],
       photoUrl,
       description,
       isAvailable,
       price,
+      numberOfBooks,
     })
     onClose()
   }
@@ -117,7 +120,6 @@ export function CreateBookModal({
             onChange={value => setYearPublished(value ?? undefined)}
           />
 
-          {/* ✅ Genre dropdown from BookGenre constant */}
           <Select
             placeholder="Select Genre"
             style={{ width: '100%' }}
@@ -142,8 +144,16 @@ export function CreateBookModal({
             rows={3}
           />
 
+          <InputNumber
+            placeholder="Number of books in stock"
+            style={{ width: '100%' }}
+            value={numberOfBooks}
+            onChange={value => setNumberOfBooks(value ?? 0)}
+            min={0}
+          />
+
           <Space>
-            <span>Available:</span>
+            <span>Available for borrowing:</span>
             <Switch
               checked={isAvailable}
               onChange={checked => setIsAvailable(checked)}
@@ -156,6 +166,8 @@ export function CreateBookModal({
             value={price}
             onChange={value => setPrice(value ?? undefined)}
             min={0}
+            prefix="$"
+            precision={2}
           />
         </Space>
       </Modal>

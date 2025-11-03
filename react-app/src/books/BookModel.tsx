@@ -6,6 +6,7 @@ export type BookModel = {
   photoUrl: string
   description?: string | null
   isAvailable: boolean
+  numberOfBooks: number // 👈 added
   author: {
     id: string
     firstName: string
@@ -24,6 +25,11 @@ export type CreateBookModel = {
   description?: string
   isAvailable: boolean
   price: number
+  numberOfBooks?: number // 👈 added
+}
+
+export type UpdateBookModel = Partial<CreateBookModel> & {
+  numberOfBooks?: number // 👈 added for explicit updates
 }
 
 export const BookGenre = {
@@ -39,5 +45,3 @@ export const BookGenre = {
 } as const
 
 export type BookGenre = (typeof BookGenre)[keyof typeof BookGenre]
-
-export type UpdateBookModel = Partial<CreateBookModel>

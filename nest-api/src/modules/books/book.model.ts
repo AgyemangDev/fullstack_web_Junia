@@ -15,7 +15,7 @@ export type BookModel = {
   photoUrl: string;
   price: number;
   description?: string | null;
-  isAvailable: boolean;
+  numberOfBooks: number;
 };
 
 export type CreateBookModel = {
@@ -26,10 +26,13 @@ export type CreateBookModel = {
   photoUrl: string;
   price: number;
   description?: string;
+  numberOfBooks?: number;
+  isAvailable?: boolean;
 };
 
 export type UpdateBookModel = Partial<CreateBookModel> & {
   isAvailable?: boolean;
+  numberOfBooks?: number;
 };
 
 export type FilterBooksModel = {

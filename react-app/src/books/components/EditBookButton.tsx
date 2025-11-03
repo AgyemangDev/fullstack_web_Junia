@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 import { BookFormModal } from './BookFormModal'
-import type { BookModel, UpdateBookModel } from '../BookModel'
+import type { BookModel, UpdateBookModel, CreateBookModel } from '../BookModel'
 
 interface EditBookButtonProps {
   book: BookModel
@@ -12,8 +12,9 @@ interface EditBookButtonProps {
 export function EditBookButton({ book, onUpdate }: EditBookButtonProps) {
   const [open, setOpen] = useState(false)
 
-  const handleSubmit = (updatedData: UpdateBookModel) => {
-    onUpdate(book.id, updatedData)
+  const handleSubmit = (updatedData: CreateBookModel | UpdateBookModel) => {
+    // In edit mode, we cast to UpdateBookModel
+    onUpdate(book.id, updatedData as UpdateBookModel)
     setOpen(false)
   }
 

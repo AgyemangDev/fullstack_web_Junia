@@ -51,6 +51,10 @@ export class BookEntity extends BaseEntity {
   @Column({ name: 'is_available', type: 'boolean', default: true })
   isAvailable: boolean;
 
+  // 👇 NEW COLUMN ADDED
+  @Column({ name: 'number_of_books', type: 'int', default: 0 })
+  numberOfBooks: number;
+
   @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'author_id' })
   author: AuthorEntity;
