@@ -1,6 +1,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { Layout } from '../Layout'
 import { AuthProvider } from '../auth/AuthContext'
+import { ThemeProvider } from '../contexts/ThemeContext'
 
 function NotFound() {
   return (
@@ -13,11 +14,13 @@ function NotFound() {
 
 const RootLayout = () => {
   return (
-    <AuthProvider>
-      <Layout>
-        <Outlet />
-      </Layout>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

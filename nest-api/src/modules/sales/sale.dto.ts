@@ -1,20 +1,30 @@
-import { IsDateString, IsUUID } from 'class-validator';
+import { IsUUID, IsOptional, IsDateString, IsNumber } from 'class-validator';
 
 export class CreateSaleDto {
-  @IsUUID()
-  id: string;
-
   @IsUUID()
   userId: string;
 
   @IsUUID()
   bookId: string;
 
+  @IsOptional()
+  clientId: string;
+
+  @IsOptional()
   @IsDateString()
-  saleDate: string;
+  borrowDate?: string;
+
+  @IsOptional()
+  @IsDateString()
+  returnDate?: string;
+
+  @IsNumber()
+  @IsOptional()
+  quantity?: number;
 }
 
-export class GetSaleDto {
-  @IsUUID()
-  id: string;
+export class UpdateSaleDto {
+  @IsNumber()
+  @IsOptional()
+  quantity?: number;
 }

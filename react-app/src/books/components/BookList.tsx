@@ -6,12 +6,14 @@ import Search from './Search'
 import { CreateBookButton } from './CreateBookButton'
 import { BookGenre, type BookModel } from '../BookModel'
 import { useAuth } from '../../auth/AuthContext'
+import { useThemeColors } from '../../hooks/useThemeColors'
 
 const { Title } = Typography
 
 export function BookList() {
   const { books, loadBooks, createBook } = useBookProvider()
   const { user } = useAuth()
+  const colors = useThemeColors()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
     undefined,
@@ -24,7 +26,7 @@ export function BookList() {
   const isLibrarian = user?.role === 'librarian'
 
   useEffect(() => {
-    loadBooks()
+    void loadBooks()
   }, [loadBooks])
 
   // Filtrer les livres selon la recherche, le genre et la disponibilité
@@ -61,7 +63,7 @@ export function BookList() {
         <Title
           level={2}
           style={{
-            color: '#395E66',
+            color: '#ffffff',
             fontSize: '2.5rem',
             fontWeight: 600,
             margin: 0,
@@ -89,7 +91,12 @@ export function BookList() {
         <Col xs={24} sm={12} md={8}>
           <Space>
             <span
-              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
+              style={{
+                marginRight: '8px',
+                fontSize: '1rem',
+                fontWeight: 500,
+                color: colors.text,
+              }}
             >
               Genre:
             </span>
@@ -99,11 +106,16 @@ export function BookList() {
               style={{ width: 200 }}
               value={selectedGenre}
               onChange={setSelectedGenre}
+              popupMatchSelectWidth={false}
+              optionLabelProp="label"
+              getPopupContainer={trigger => trigger.parentElement}
             >
-              <Select.Option value="">All genres</Select.Option>
+              <Select.Option value="">
+                <span style={{ color: colors.text }}>All genres</span>
+              </Select.Option>
               {Object.entries(BookGenre).map(([key, value]) => (
                 <Select.Option key={key} value={value}>
-                  {value}
+                  <span style={{ color: colors.text }}>{value}</span>
                 </Select.Option>
               ))}
             </Select>
@@ -113,7 +125,12 @@ export function BookList() {
         <Col xs={24} sm={12} md={8}>
           <Space>
             <span
-              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
+              style={{
+                marginRight: '8px',
+                fontSize: '1rem',
+                fontWeight: 500,
+                color: colors.text,
+              }}
             >
               Availability:
             </span>
@@ -123,9 +140,15 @@ export function BookList() {
               style={{ width: 150 }}
               value={availableFilter}
               onChange={setAvailableFilter}
+              popupMatchSelectWidth={false}
+              getPopupContainer={trigger => trigger.parentElement}
             >
-              <Select.Option value={true}>Available</Select.Option>
-              <Select.Option value={false}>Borrowed</Select.Option>
+              <Select.Option value={true}>
+                <span style={{ color: colors.text }}>Available</span>
+              </Select.Option>
+              <Select.Option value={false}>
+                <span style={{ color: colors.text }}>Borrowed</span>
+              </Select.Option>
             </Select>
           </Space>
         </Col>
@@ -134,7 +157,7 @@ export function BookList() {
       {/* Book list */}
       {filteredBooks.length === 0 ? (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <p style={{ fontSize: '1.2rem', color: '#666' }}>No books found</p>
+          <p style={{ fontSize: '1.2rem', color: '#ffffff' }}>No books found</p>
         </div>
       ) : (
         <Row gutter={[16, 16]} style={{ padding: '0 1.5rem 2rem 1.5rem' }}>
@@ -145,6 +168,61 @@ export function BookList() {
           ))}
         </Row>
       )}
+
+      <style>{`
+        /* Select input styling */
+        .ant-select-selector {
+          background-color: ${colors.inputBg} !important;
+          border-color: ${colors.border} !important;
+        }
+        .ant-select-selection-item {
+          color: ${colors.text} !important;
+        }
+        .ant-select-arrow {
+          color: ${colors.text} !important;
+        }
+        .ant-select-clear {
+          color: ${colors.text} !important;
+        }
+        
+        /* Dropdown menu */
+        .ant-select-dropdown {
+          background-color: ${colors.cardBg} !important;
+        }
+        
+        /* All select items */
+        .ant-select-item {
+          background-color: ${colors.cardBg} !important;
+          color: ${colors.text} !important;
+        }
+        
+        /* Option items */
+        .ant-select-item-option {
+          background-color: ${colors.cardBg} !important;
+          color: ${colors.text} !important;
+        }
+        
+        /* Hover state */
+        .ant-select-item-option:hover {
+          background-color: ${colors.lightBg} !important;
+        }
+        
+        /* Selected state */
+        .ant-select-item-option-selected {
+          background-color: ${colors.lightBg} !important;
+          color: ${colors.text} !important;
+        }
+        
+        .ant-select-item-option-selected:hover {
+          background-color: ${colors.lightBg} !important;
+        }
+        
+        /* Active state */
+        .ant-select-item-option-active {
+          background-color: ${colors.lightBg} !important;
+          color: ${colors.text} !important;
+        }
+      `}</style>
     </>
   )
 }

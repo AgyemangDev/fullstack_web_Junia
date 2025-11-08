@@ -16,6 +16,7 @@ export type BookModel = {
   price: number;
   description?: string | null;
   isAvailable: boolean;
+  quantity: number;
 };
 
 export type CreateBookModel = {
@@ -26,10 +27,12 @@ export type CreateBookModel = {
   photoUrl: string;
   price: number;
   description?: string;
+  quantity?: number;
 };
 
 export type UpdateBookModel = Partial<CreateBookModel> & {
   isAvailable?: boolean;
+  quantity?: number;
 };
 
 export type FilterBooksModel = {

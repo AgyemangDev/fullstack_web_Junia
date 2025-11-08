@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -23,7 +22,7 @@ export enum BookGenre {
 }
 
 @Entity('books')
-export class BookEntity extends BaseEntity {
+export class BookEntity {
   @PrimaryGeneratedColumn('uuid')
   id: BookId;
 
@@ -50,6 +49,9 @@ export class BookEntity extends BaseEntity {
 
   @Column({ name: 'is_available', type: 'boolean', default: true })
   isAvailable: boolean;
+
+  @Column({ type: 'int', default: 10 })
+  quantity: number;
 
   @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'author_id' })
