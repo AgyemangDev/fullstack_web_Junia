@@ -4,43 +4,46 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { SaleService } from './sale.service';
 import { CreateSaleDto } from './sale.dto';
-import { SaleEntity } from './sale.entity';
 import { JwtAuthGuard } from '../users/jwt-auth.guard';
-import { RolesGuard, Roles } from '../users/roles.guard';
-import { UserRole } from '../users/user.dto';
 
 @Controller('sales')
+@UseGuards(JwtAuthGuard)
 export class SaleController {
   constructor(private readonly saleService: SaleService) {}
 
+  // Borrow a book
   @Post()
-  @UseGuards(JwtAuthGuard)
-  createSale(@Body() dto: CreateSaleDto): Promise<SaleEntity> {
+  async createSale(@Body() dto: CreateSaleDto) {
     return this.saleService.createSale(dto);
   }
 
+  // Mark a book as returned
+  @Patch(':id/return')
+  async markAsReturned(@Param('id') id: string) {
+    return this.saleService.markAsReturned(id);
+  }
+
+  // Get all borrow records
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.LIBRARIAN)
-  getAllSales(): Promise<SaleEntity[]> {
+  async getAllSales() {
     return this.saleService.getAllSales();
   }
 
+  // Get a single record by ID
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  getSale(@Param('id') id: string): Promise<SaleEntity | null> {
+  async getSaleById(@Param('id') id: string) {
     return this.saleService.getSaleById(id);
   }
 
+  // Delete a record
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.LIBRARIAN)
-  deleteSale(@Param('id') id: string): Promise<void> {
+  async deleteSale(@Param('id') id: string) {
     return this.saleService.deleteSale(id);
   }
 }

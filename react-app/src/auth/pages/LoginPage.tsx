@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Form, Input, Button, Card, Typography, Alert, Space } from 'antd'
 import { useAuth } from '../AuthContext'
+import { useTheme } from '../../contexts/ThemeContext'
 
 const { Title } = Typography
 
@@ -11,6 +12,19 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>('')
 
+  const { isDarkMode } = useTheme()
+
+  const colors = {
+    headerBgGradient: isDarkMode
+      ? 'linear-gradient(to bottom, #0a0e27 0%, #1a1a2e 100%)'
+      : 'linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%)',
+    cardBg: isDarkMode ? '#1f1f1f' : '#ffffff',
+    text: isDarkMode ? '#ffffff' : '#000000',
+    textSecondary: isDarkMode ? '#b3b3b3' : '#666666',
+    primaryColor: '#395E66',
+    border: isDarkMode ? '#434343' : '#d9d9d9',
+    shadow: isDarkMode ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.1)',
+  }
   const onFinish = async (values: {
     email: string
     password: string

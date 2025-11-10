@@ -14,23 +14,19 @@ export class UserRepository {
 
   public async getAllUsers(): Promise<UserModel[]> {
     const users = await this.userRepository.find();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return users.map(({ password, ...safeUser }) => safeUser);
+    return users.map(({ password: _password, ...safeUser }) => safeUser);
   }
 
   public async createUser(user: CreateUserModel): Promise<UserModel> {
-    // 1️⃣ Hash password before saving
-
-    const hashedPassword: string = await bcrypt.hash(user.password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const entity = this.userRepository.create({
       ...user,
-      password: hashedPassword, // save hashed password
+      password: hashedPassword,
     });
 
     const saved = await this.userRepository.save(entity);
 
-    // 2️⃣ Return safe user object (omit password)
     const { password: _password, ...safeUser } = saved;
     return safeUser;
   }
@@ -42,6 +38,7 @@ export class UserRepository {
   public async getUserById(id: UserId): Promise<UserModel | null> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) return null;
+
     const { password: _password, ...safeUser } = user;
     return safeUser;
   }
@@ -50,6 +47,7 @@ export class UserRepository {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
+
     await this.userRepository.update(id, data);
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) return null;

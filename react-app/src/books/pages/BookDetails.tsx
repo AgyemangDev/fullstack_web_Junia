@@ -27,6 +27,7 @@ import { Route as booksRoute } from '../../routes/books/index'
 import type { UpdateBookModel } from '../BookModel'
 import { Modal } from 'antd'
 import { EditBookButton } from '../components/EditBookButton'
+import { useThemeColors } from '../../hooks/useThemeColors'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -38,6 +39,7 @@ interface BookDetailsProps {
 
 export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
   const { isLoading, book, loadBook } = useBookDetailsProvider(id)
+  const colors = useThemeColors()
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState('')
   const navigate = useNavigate()
@@ -80,7 +82,15 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
 
   if (isLoading) {
     return (
-      <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <div
+        style={{
+          padding: '2rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          background: colors.bg,
+          minHeight: '100vh',
+        }}
+      >
         <Skeleton active />
       </div>
     )
@@ -88,7 +98,15 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
 
   if (!book) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <div
+        style={{
+          padding: '2rem',
+          textAlign: 'center',
+          background: colors.bg,
+          minHeight: '100vh',
+          color: colors.text,
+        }}
+      >
         <Text>No book found.</Text>
       </div>
     )
@@ -101,6 +119,8 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
         maxWidth: '1200px',
         margin: '0 auto',
         minHeight: '100vh',
+        background: colors.bg,
+        color: colors.text,
       }}
     >
       {/* Header with Back link and Actions */}
@@ -117,7 +137,7 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
         <Link
           to={booksRoute.to}
           style={{
-            color: '#395E66',
+            color: colors.primary,
             fontSize: '16px',
             display: 'inline-flex',
             alignItems: 'center',
@@ -136,8 +156,8 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               onClick={handleSave}
               size="middle"
               style={{
-                backgroundColor: '#395E66',
-                borderColor: '#395E66',
+                backgroundColor: colors.primary,
+                borderColor: colors.primary,
               }}
             >
               Save
@@ -169,9 +189,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
         {/* Left Column - Book Cover */}
         <Col xs={24} md={10} lg={8}>
           <Card
-            bordered={false}
+            bordered
             style={{
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              backgroundColor: colors.cardBg,
+              borderColor: colors.border,
+              boxShadow: `0 4px 12px ${colors.shadow}`,
               borderRadius: '12px',
               overflow: 'hidden',
               position: 'sticky',
@@ -194,14 +216,16 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                 style={{
                   width: '100%',
                   height: '500px',
-                  background: '#f0f0f0',
+                  background: colors.lightBg,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: '8px',
                 }}
               >
-                <Text type="secondary">No cover available</Text>
+                <Text style={{ color: colors.textSecondary }}>
+                  No cover available
+                </Text>
               </div>
             )}
 
@@ -247,13 +271,16 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
                   marginBottom: '0.5rem',
                   height: 'auto',
                   padding: '8px 12px',
+                  backgroundColor: colors.inputBg,
+                  color: colors.text,
+                  borderColor: colors.border,
                 }}
                 placeholder="Book title"
               />
             ) : (
               <Title
                 level={1}
-                style={{ marginBottom: '0.5rem', color: '#395E66' }}
+                style={{ marginBottom: '0.5rem', color: colors.primary }}
               >
                 {book.title}
               </Title>
@@ -275,45 +302,56 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               >
                 {book.genre}
               </Tag>
-              <Text type="secondary" style={{ fontSize: '16px' }}>
+              <Text style={{ fontSize: '16px', color: colors.textSecondary }}>
                 Published in {book.yearPublished}
               </Text>
             </div>
 
-            <Divider />
+            <Divider style={{ borderColor: colors.border }} />
 
             {/* Description */}
             {book.description && (
               <div style={{ marginBottom: '2rem' }}>
-                <Title level={4} style={{ color: '#395E66' }}>
+                <Title level={4} style={{ color: colors.primary }}>
                   Description
                 </Title>
                 <Paragraph
-                  style={{ fontSize: '16px', lineHeight: '1.8', color: '#555' }}
+                  style={{
+                    fontSize: '16px',
+                    lineHeight: '1.8',
+                    color: colors.text,
+                  }}
                 >
                   {book.description}
                 </Paragraph>
               </div>
             )}
 
-            <Divider />
+            <Divider style={{ borderColor: colors.border }} />
 
             {/* Author Section */}
             <div>
-              <Title level={4} style={{ color: '#395E66' }}>
+              <Title level={4} style={{ color: colors.primary }}>
                 About the author
               </Title>
               <Title
                 level={5}
-                style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
+                style={{
+                  marginTop: '1rem',
+                  marginBottom: '0.5rem',
+                  color: colors.text,
+                }}
               >
                 {book.author.firstName} {book.author.lastName}
               </Title>
 
               {book.author.nationality && (
                 <Text
-                  type="secondary"
-                  style={{ display: 'block', marginBottom: '1rem' }}
+                  style={{
+                    display: 'block',
+                    marginBottom: '1rem',
+                    color: colors.textSecondary,
+                  }}
                 >
                   {book.author.nationality}
                 </Text>
@@ -321,7 +359,11 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
 
               {book.author.biography && (
                 <Paragraph
-                  style={{ fontSize: '15px', lineHeight: '1.7', color: '#666' }}
+                  style={{
+                    fontSize: '15px',
+                    lineHeight: '1.7',
+                    color: colors.text,
+                  }}
                 >
                   {book.author.biography}
                 </Paragraph>
@@ -330,6 +372,31 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
           </div>
         </Col>
       </Row>
+
+      <style>{`
+        .ant-typography {
+          color: ${colors.text} !important;
+        }
+        .ant-typography-secondary {
+          color: ${colors.textSecondary} !important;
+        }
+        .ant-divider {
+          border-color: ${colors.border} !important;
+        }
+        .ant-tag {
+          background-color: ${colors.lightBg} !important;
+          color: ${colors.text} !important;
+          border-color: ${colors.border} !important;
+        }
+        .ant-tag-blue {
+          background-color: #395E66 !important;
+          color: #ffffff !important;
+          border-color: #395E66 !important;
+        }
+        .ant-badge-status-text {
+          color: ${colors.text} !important;
+        }
+      `}</style>
     </div>
   )
 }

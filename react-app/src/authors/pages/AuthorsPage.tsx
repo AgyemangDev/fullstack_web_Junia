@@ -19,13 +19,15 @@ import {
 } from '@ant-design/icons'
 import { useAuthorProvider } from '../providers/useAuthorProvider'
 import { useAuth } from '../../auth/AuthContext'
+import { useThemeColors } from '../../hooks/useThemeColors'
 
-const { Title, Text } = Typography
+const { Text } = Typography
 
 export function AuthorsPage() {
   const { authors, loadAuthors, createAuthor, updateAuthor, deleteAuthor } =
     useAuthorProvider()
   const { user } = useAuth()
+  const colors = useThemeColors()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingAuthor, setEditingAuthor] = useState<{
     id: string
@@ -41,7 +43,7 @@ export function AuthorsPage() {
   const isLibrarian = user?.role === 'librarian'
 
   useEffect(() => {
-    loadAuthors()
+    void loadAuthors()
   }, [loadAuthors])
 
   const handleCreate = () => {
@@ -98,28 +100,35 @@ export function AuthorsPage() {
     <div
       style={{
         minHeight: '100vh',
-        background: 'linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%)',
-        padding: '2rem',
+        background: colors.headerBgGradient,
+        padding: '2.5rem',
+        color: colors.text,
       }}
     >
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           marginBottom: '2rem',
+          gap: '1rem',
         }}
       >
-        <Title
-          level={2}
-          style={{
-            color: '#395E66',
-            fontSize: '2.5rem',
-            fontWeight: 600,
-          }}
-        >
-          Author Management
-        </Title>
+        <div>
+          <h1
+            style={{
+              color: '#ffffff',
+              fontSize: '2.8rem',
+              fontWeight: 700,
+              margin: 0,
+            }}
+          >
+            Author Management
+          </h1>
+          <p style={{ color: '#ffffff', margin: '0.5rem 0 0 0' }}>
+            Manage library authors and their information
+          </p>
+        </div>
         {isLibrarian && (
           <Button
             type="primary"
@@ -127,8 +136,9 @@ export function AuthorsPage() {
             onClick={handleCreate}
             size="large"
             style={{
-              backgroundColor: '#395E66',
-              borderColor: '#395E66',
+              backgroundColor: colors.primary,
+              borderColor: colors.primary,
+              fontWeight: 600,
             }}
           >
             Add an Author
@@ -143,7 +153,10 @@ export function AuthorsPage() {
               hoverable
               style={{
                 borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                boxShadow: `0 4px 12px ${colors.shadow}`,
+                backgroundColor: colors.cardBg,
+                borderColor: colors.border,
+                border: `1px solid ${colors.border}`,
               }}
               cover={
                 author.photo ? (
@@ -163,8 +176,7 @@ export function AuthorsPage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      background:
-                        'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
+                      background: colors.gradientBg,
                       borderRadius: '12px 12px 0 0',
                     }}
                   >
@@ -185,6 +197,7 @@ export function AuthorsPage() {
                         type="text"
                         icon={<EditOutlined />}
                         onClick={() => handleEdit(author)}
+                        style={{ color: colors.primary }}
                       >
                         Edit
                       </Button>,
@@ -208,7 +221,7 @@ export function AuthorsPage() {
                 title={
                   <div
                     style={{
-                      color: '#395E66',
+                      color: colors.text,
                       fontSize: '1.1rem',
                       fontWeight: 600,
                     }}
@@ -219,13 +232,24 @@ export function AuthorsPage() {
                 description={
                   <div>
                     {author.nationality && (
-                      <Text type="secondary" style={{ fontSize: '0.95rem' }}>
+                      <Text
+                        style={{
+                          fontSize: '0.95rem',
+                          color: colors.textSecondary,
+                        }}
+                      >
                         {author.nationality}
                       </Text>
                     )}
                     {author.biography && (
                       <div style={{ marginTop: '8px' }}>
-                        <Text ellipsis style={{ fontSize: '0.9rem' }}>
+                        <Text
+                          ellipsis
+                          style={{
+                            fontSize: '0.9rem',
+                            color: colors.textSecondary,
+                          }}
+                        >
                           {author.biography}
                         </Text>
                       </div>
@@ -240,9 +264,9 @@ export function AuthorsPage() {
 
       <Modal
         title={
-          <Title level={4} style={{ color: '#395E66', margin: 0 }}>
+          <div style={{ color: colors.text }}>
             {editingAuthor ? 'Edit Author' : 'Create Author'}
-          </Title>
+          </div>
         }
         open={isModalOpen}
         onCancel={() => {
@@ -253,8 +277,18 @@ export function AuthorsPage() {
         okText={editingAuthor ? 'Update' : 'Create'}
         okButtonProps={{
           style: {
-            backgroundColor: '#395E66',
-            borderColor: '#395E66',
+            backgroundColor: colors.primary,
+            borderColor: colors.primary,
+          },
+        }}
+        styles={{
+          content: {
+            backgroundColor: colors.cardBg,
+            color: colors.text,
+          },
+          header: {
+            backgroundColor: colors.cardBg,
+            borderBottom: `1px solid ${colors.border}`,
           },
         }}
       >
@@ -265,34 +299,98 @@ export function AuthorsPage() {
           autoComplete="off"
         >
           <Form.Item
-            label="First Name"
+            label={<span style={{ color: colors.text }}>First Name</span>}
             name="firstName"
             rules={[{ required: true, message: 'First name is required' }]}
           >
-            <Input />
+            <Input
+              style={{
+                backgroundColor: colors.inputBg,
+                color: colors.text,
+                borderColor: colors.border,
+              }}
+            />
           </Form.Item>
 
           <Form.Item
-            label="Last Name"
+            label={<span style={{ color: colors.text }}>Last Name</span>}
             name="lastName"
             rules={[{ required: true, message: 'Last name is required' }]}
           >
-            <Input />
+            <Input
+              style={{
+                backgroundColor: colors.inputBg,
+                color: colors.text,
+                borderColor: colors.border,
+              }}
+            />
           </Form.Item>
 
-          <Form.Item label="Nationality" name="nationality">
-            <Input placeholder="Ex: French" />
+          <Form.Item
+            label={<span style={{ color: colors.text }}>Nationality</span>}
+            name="nationality"
+          >
+            <Input
+              placeholder="Ex: French"
+              style={{
+                backgroundColor: colors.inputBg,
+                color: colors.text,
+                borderColor: colors.border,
+              }}
+            />
           </Form.Item>
 
-          <Form.Item label="Biography" name="biography">
-            <Input.TextArea rows={4} placeholder="Author biography..." />
+          <Form.Item
+            label={<span style={{ color: colors.text }}>Biography</span>}
+            name="biography"
+          >
+            <Input.TextArea
+              rows={4}
+              placeholder="Author biography..."
+              style={{
+                backgroundColor: colors.inputBg,
+                color: colors.text,
+                borderColor: colors.border,
+              }}
+            />
           </Form.Item>
 
-          <Form.Item label="Photo URL" name="photo">
-            <Input placeholder="https://..." />
+          <Form.Item
+            label={<span style={{ color: colors.text }}>Photo URL</span>}
+            name="photo"
+          >
+            <Input
+              placeholder="https://..."
+              style={{
+                backgroundColor: colors.inputBg,
+                color: colors.text,
+                borderColor: colors.border,
+              }}
+            />
           </Form.Item>
         </Form>
       </Modal>
+
+      <style>{`
+        .ant-card {
+          background-color: ${colors.cardBg} !important;
+          border-color: ${colors.border} !important;
+        }
+        .ant-card-head {
+          background-color: ${colors.cardBg} !important;
+          border-color: ${colors.border} !important;
+        }
+        .ant-input,
+        .ant-input-textarea textarea {
+          background-color: ${colors.inputBg} !important;
+          color: ${colors.text} !important;
+          border-color: ${colors.border} !important;
+        }
+        .ant-input::placeholder,
+        .ant-input-textarea textarea::placeholder {
+          color: ${colors.textSecondary} !important;
+        }
+      `}</style>
     </div>
   )
 }
