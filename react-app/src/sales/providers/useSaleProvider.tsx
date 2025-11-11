@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import apiClient from '../../api/axios'
+import type { AxiosError } from 'axios'
+import { useAuth } from '../../auth/AuthContext'
 
-// Interface pour une vente
 export interface Sale {
   id: string
   saleDate: Date
@@ -22,43 +23,102 @@ export interface Sale {
   }
 }
 
-// Interface pour créer une vente
 export interface CreateSale {
-  userId: string
+  buyerId: string
   bookId: string
   saleDate: string
 }
 
-// Provider pour gérer les ventes
+export interface Member {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  role: string
+}
+
 export const useSaleProvider = () => {
   const [sales, setSales] = useState<Sale[]>([])
+  const { user: librarian } = useAuth()
 
-  // Charger toutes les ventes
-  const loadSales = () => {
-    apiClient
-      .get('/sales')
-      .then(response => {
-        setSales(response.data)
-      })
-      .catch(err => console.error(err))
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token')
+    return token ? { Authorization: `Bearer ${token}` } : {}
   }
 
-  // Créer une vente
-  const createSale = (sale: CreateSale) => {
-    return apiClient.post('/sales', {
-      id: crypto.randomUUID(),
-      ...sale,
-    })
+  const loadSales = async () => {
+    try {
+      const response = await apiClient.get<Sale[]>('/sales', {
+        headers: getAuthHeaders(),
+      })
+      setSales(response.data)
+    } catch (err) {
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosErr = err as AxiosError
+        console.error(
+          'Error loading sales:',
+          axiosErr.response?.data || axiosErr.message,
+        )
+      } else {
+        console.error('Error loading sales:', err)
+      }
+    }
   }
 
-  // Supprimer une vente
-  const deleteSale = (id: string) => {
-    apiClient
-      .delete(`/sales/${id}`)
-      .then(() => {
-        loadSales()
+  const createSale = async (sale: CreateSale) => {
+    if (!librarian) throw new Error('No logged-in librarian found')
+
+    try {
+      const response = await apiClient.post(
+        '/sales',
+        { ...sale, librarianId: librarian.id },
+        { headers: getAuthHeaders() },
+      )
+      await loadSales()
+      return response.data
+    } catch (err) {
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosErr = err as AxiosError
+        console.error(
+          'Error creating sale:',
+          axiosErr.response?.data || axiosErr.message,
+        )
+        throw axiosErr
+      } else {
+        console.error('Error creating sale:', err)
+        throw err
+      }
+    }
+  }
+
+  const deleteSale = async (id: string) => {
+    try {
+      await apiClient.delete(`/sales/${id}`, { headers: getAuthHeaders() })
+      await loadSales()
+    } catch (err) {
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosErr = err as AxiosError
+        console.error(
+          'Error deleting sale:',
+          axiosErr.response?.data || axiosErr.message,
+        )
+      } else {
+        console.error('Error deleting sale:', err)
+      }
+    }
+  }
+
+  /** 🔹 Fetch all members from API */
+  const fetchMembers = async (): Promise<Member[]> => {
+    try {
+      const response = await apiClient.get<Member[]>('/users/role/member', {
+        headers: getAuthHeaders(),
       })
-      .catch(err => console.error(err))
+      return Array.isArray(response.data) ? response.data : []
+    } catch (err) {
+      console.error('Error fetching members:', err)
+      return []
+    }
   }
 
   return {
@@ -66,5 +126,6 @@ export const useSaleProvider = () => {
     loadSales,
     createSale,
     deleteSale,
+    fetchMembers, // ✅ Expose here
   }
 }

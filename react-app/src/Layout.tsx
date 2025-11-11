@@ -30,8 +30,11 @@ export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    logout()
-    navigate({ to: loginRoute.to })
+    const confirmed = window.confirm('Are you sure you want to log out?');
+    if (confirmed) {
+      logout()
+      navigate({ to: loginRoute.to })
+    }
   }
 
   const items = [
