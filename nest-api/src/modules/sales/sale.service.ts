@@ -7,8 +7,8 @@ import { SaleEntity } from './sale.entity';
 export class SaleService {
   constructor(private readonly saleRepository: SaleRepository) {}
 
-  createSale(dto: CreateSaleDto): Promise<SaleEntity> {
-    return this.saleRepository.createSale(dto);
+  createSale(dto: CreateSaleDto, librarianId: string): Promise<SaleEntity> {
+    return this.saleRepository.createSale(dto, librarianId);
   }
 
   getSaleById(id: string): Promise<SaleEntity | null> {

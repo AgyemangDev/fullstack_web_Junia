@@ -19,31 +19,46 @@ export class SaleRepository {
     private readonly bookRepository: Repository<BookEntity>,
   ) {}
 
-  async createSale(dto: CreateSaleDto): Promise<SaleEntity> {
-    const user = await this.userRepository.findOne({
-      where: { id: dto.userId as UserId },
+  async createSale(
+    dto: CreateSaleDto,
+    librarianId: string,
+  ): Promise<SaleEntity> {
+    const buyer = await this.userRepository.findOne({
+      where: { id: dto.buyerId as UserId },
+    });
+    const librarian = await this.userRepository.findOne({
+      where: { id: librarianId as UserId },
     });
     const book = await this.bookRepository.findOne({
-      where: { id: dto.bookId as BookId },
+      where: { id: dto.bookId as unknown as BookId },
     });
 
-    if (!user) throw new Error('User not found');
-    if (!book) throw new Error('Book not found');
+    if (!buyer) throw new BadRequestException('Buyer not found');
+    if (!librarian) throw new BadRequestException('Librarian not found');
+    if (!book) throw new BadRequestException('Book not found');
 
-    if (!book.isAvailable) {
-      throw new BadRequestException('Book is not available for purchase');
+    if (!book.isAvailable || book.numberOfBooks <= 0) {
+      throw new BadRequestException('Book is out of stock');
     }
 
+    // --- Create and save the sale ---
     const sale = this.saleRepository.create({
-      user,
+      buyer,
+      librarian,
       book,
       saleDate: new Date(dto.saleDate),
     });
 
     const savedSale = await this.saleRepository.save(sale);
 
-    // Mettre à jour la disponibilité du livre à false après la vente
-    await this.bookRepository.update(dto.bookId, { isAvailable: false });
+    // --- Decrement stock ---
+    const updatedStock = book.numberOfBooks - 1;
+    const isAvailable = updatedStock > 0;
+
+    await this.bookRepository.update(book.id, {
+      numberOfBooks: updatedStock,
+      isAvailable,
+    });
 
     return savedSale;
   }
@@ -51,13 +66,13 @@ export class SaleRepository {
   async getSaleById(id: string): Promise<SaleEntity | null> {
     return this.saleRepository.findOne({
       where: { id },
-      relations: ['user', 'book', 'book.author'],
+      relations: ['buyer', 'librarian', 'book', 'book.author'],
     });
   }
 
   async getAllSales(): Promise<SaleEntity[]> {
     return this.saleRepository.find({
-      relations: ['user', 'book', 'book.author'],
+      relations: ['buyer', 'librarian', 'book', 'book.author'],
     });
   }
 

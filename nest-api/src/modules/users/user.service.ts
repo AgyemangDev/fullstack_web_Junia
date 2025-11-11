@@ -11,7 +11,6 @@ import { UpdateUserDto, UserRole } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserId } from './user.entity';
 
-// Interface pour la réponse de connexion avec token
 export interface LoginResponse {
   user: UserModel;
   access_token: string;
@@ -25,18 +24,19 @@ export class UserService {
   ) {}
 
   async getAllUsers() {
-    // Assuming your repository already handles this
     return this.userRepository.getAllUsers();
   }
 
+  async getUsersByRole(role: UserRole | UserRole[]) {
+    return this.userRepository.getUsersByRole(role);
+  }
+
   async createUser(user: CreateUserModel): Promise<UserModel> {
-    // Check if email already exists
     const existingUser = await this.userRepository.getUserByEmail(user.email);
     if (existingUser) {
       throw new ConflictException('Email already exists');
     }
 
-    // Validate role
     if (!Object.values(UserRole).includes(user.role)) {
       throw new BadRequestException(
         `Invalid role. Allowed roles: ${Object.values(UserRole).join(', ')}`,
@@ -56,7 +56,6 @@ export class UserService {
     const passwordMatches = await bcrypt.compare(password, user.password);
     if (!passwordMatches) return null;
 
-    // return safe object
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: pwd, ...safeUser } = user;
     return safeUser;
@@ -68,7 +67,7 @@ export class UserService {
     expectedRole?: UserRole,
   ): Promise<LoginResponse> {
     const user = await this.userRepository.getUserByEmail(email);
-    if (!user) {
+    if (!user || !user.password) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
@@ -86,7 +85,6 @@ export class UserService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: pwd, ...safeUser } = user;
 
-    // Générer le token JWT
     const payload = { sub: user.id, email: user.email, role: user.role };
     const access_token = this.jwtService.sign(payload);
 

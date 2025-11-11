@@ -5,7 +5,7 @@ export class CreateSaleDto {
   id: string;
 
   @IsUUID()
-  userId: string;
+  buyerId: string;
 
   @IsUUID()
   bookId: string;

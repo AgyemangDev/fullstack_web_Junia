@@ -11,6 +11,16 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
+  @Get('role/:role')
+  async getUsersByRole(@Param('role') role: string) {
+    if (!Object.values(UserRole).includes(role as UserRole)) {
+      throw new Error(
+        `Invalid role. Allowed roles: ${Object.values(UserRole).join(', ')}`,
+      );
+    }
+    return this.userService.getUsersByRole(role as UserRole);
+  }
+
   @Post()
   async createUser(@Body() body: CreateUserDto) {
     return this.userService.createUser(body);

@@ -13,9 +13,15 @@ export class SaleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  // Librarian performing the transaction
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  @JoinColumn({ name: 'librarian_id' })
+  librarian: UserEntity;
+
+  // Member purchasing or borrowing
+  @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'buyer_id' })
+  buyer: UserEntity;
 
   @ManyToOne(() => BookEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'book_id' })

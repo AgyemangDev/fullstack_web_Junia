@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { SaleService } from './sale.service';
@@ -19,9 +20,12 @@ export class SaleController {
   constructor(private readonly saleService: SaleService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  createSale(@Body() dto: CreateSaleDto): Promise<SaleEntity> {
-    return this.saleService.createSale(dto);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.LIBRARIAN)
+  createSale(@Body() dto: CreateSaleDto, @Req() req): Promise<SaleEntity> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const librarianId = req.user.id; // Comes from JWT payload
+    return this.saleService.createSale(dto, librarianId);
   }
 
   @Get()
