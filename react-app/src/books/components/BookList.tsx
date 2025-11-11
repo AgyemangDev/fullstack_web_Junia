@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useBookProvider } from '../providers/useBookProvider'
 import { BookListItem } from './BookListItem'
-import { Row, Col, Select, Space, Typography } from 'antd'
+import { Row, Col, Select, Typography, Grid } from 'antd'
 import Search from './Search'
 import { CreateBookButton } from './CreateBookButton'
 import { BookGenre, type BookModel } from '../BookModel'
 import { useAuth } from '../../auth/AuthContext'
 
 const { Title } = Typography
+const { useBreakpoint } = Grid
 
 export function BookList() {
   const { books, loadBooks, createBook } = useBookProvider()
   const { user } = useAuth()
+  const screens = useBreakpoint()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGenre, setSelectedGenre] = useState<string | undefined>(
     undefined,
@@ -72,31 +74,29 @@ export function BookList() {
         {isLibrarian && <CreateBookButton onCreate={createBook} />}
       </div>
 
-      {/* Top bar with search and filters */}
+      {/* Search and Filters Bar */}
+      {/* Search and Filters Bar */}
       <Row
-        justify="space-between"
+        gutter={[screens.md ? 16 : 0, 16]}
         align="middle"
-        gutter={[16, 16]}
-        style={{ padding: '0 2rem 1rem 2rem' }}
+        style={{
+          padding: screens.md ? '0 2rem 2rem 2rem' : '0 1rem 1.5rem 1rem',
+        }}
       >
-        <Col flex="auto">
-          <Search onSearch={setSearchTerm} />
+        {/* Search */}
+        <Col xs={24} md={12}>
+          <div style={{ height: '60px', paddingTop: '5px' }}>
+            <Search onSearch={setSearchTerm} />
+          </div>
         </Col>
-      </Row>
 
-      {/* Filters */}
-      <Row gutter={[16, 16]} style={{ padding: '0 2rem 1rem 2rem' }}>
-        <Col xs={24} sm={12} md={8}>
-          <Space>
-            <span
-              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
-            >
-              Genre:
-            </span>
+        {/* Genre Filter */}
+        <Col xs={12} md={6}>
+          <div style={{ height: '48px' }}>
             <Select
-              placeholder="All genres"
+              placeholder="Genre"
               allowClear
-              style={{ width: 200 }}
+              style={{ width: '100%', height: '100%' }}
               value={selectedGenre}
               onChange={setSelectedGenre}
             >
@@ -107,27 +107,23 @@ export function BookList() {
                 </Select.Option>
               ))}
             </Select>
-          </Space>
+          </div>
         </Col>
 
-        <Col xs={24} sm={12} md={8}>
-          <Space>
-            <span
-              style={{ marginRight: '8px', fontSize: '1rem', fontWeight: 500 }}
-            >
-              Availability:
-            </span>
+        {/* Availability Filter */}
+        <Col xs={12} md={6}>
+          <div style={{ height: '48px' }}>
             <Select
-              placeholder="All"
+              placeholder="Availability"
               allowClear
-              style={{ width: 150 }}
+              style={{ width: '100%', height: '100%' }}
               value={availableFilter}
               onChange={setAvailableFilter}
             >
               <Select.Option value={true}>Available</Select.Option>
               <Select.Option value={false}>Borrowed</Select.Option>
             </Select>
-          </Space>
+          </div>
         </Col>
       </Row>
 

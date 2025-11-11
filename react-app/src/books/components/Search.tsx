@@ -1,34 +1,54 @@
-import { Input } from 'antd'
+import { useState } from 'react'
+import { Input, Button } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-
-const { Search: AntSearch } = Input
 
 interface SearchProps {
   onSearch: (value: string) => void
 }
 
 function Search({ onSearch }: SearchProps) {
-  const handleSearch = (value: string) => {
-    onSearch(value)
+  const [value, setValue] = useState('')
+
+  const handleSearch = () => {
+    onSearch(value.trim())
   }
 
   return (
     <div
       style={{
         display: 'flex',
+        alignItems: 'center',
         justifyContent: 'center',
+        gap: '8px',
         width: '100%',
-        padding: '1rem',
+        height: '48px', // same as filters
       }}
     >
-      <AntSearch
-        placeholder="Rechercher par titre ou auteur..."
+      <Input
+        placeholder="Search by title or author..."
+        value={value}
+        onChange={e => setValue(e.target.value)}
+        onPressEnter={handleSearch}
         allowClear
-        enterButton={<SearchOutlined />}
-        onSearch={handleSearch}
         style={{
-          maxWidth: 600,
-          width: '100%',
+          flex: 1,
+          height: '100%',
+          fontSize: '16px',
+          borderRadius: '8px',
+        }}
+      />
+      <Button
+        type="primary"
+        icon={<SearchOutlined />}
+        onClick={handleSearch}
+        style={{
+          height: '100%',
+          width: '48px',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '18px',
         }}
       />
     </div>
