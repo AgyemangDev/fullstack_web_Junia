@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import apiClient from '../../api/axios'
+import type { BookModel } from '../../books/BookModel'
 
-// Interface pour un auteur
 export interface Author {
   id: string
   firstName: string
@@ -11,7 +11,14 @@ export interface Author {
   photo?: string
 }
 
-// Interface pour créer un auteur
+export interface Book {
+  id: string
+  title: string
+  publicationYear?: number
+  genre?: string
+  cover?: string
+}
+
 export interface CreateAuthor {
   firstName: string
   lastName: string
@@ -20,58 +27,75 @@ export interface CreateAuthor {
   photo?: string
 }
 
-// Interface pour mettre à jour un auteur
 export type UpdateAuthor = Partial<CreateAuthor>
 
-// Provider pour gérer les auteurs
 export const useAuthorProvider = () => {
   const [authors, setAuthors] = useState<Author[]>([])
+  const [books, setBooks] = useState<BookModel[]>([])
 
-  // Charger tous les auteurs
   const loadAuthors = () => {
-    apiClient
-      .get('/authors')
-      .then(response => {
-        setAuthors(response.data)
+    return apiClient
+      .get<Author[]>('/authors')
+      .then(res => {
+        setAuthors(res.data)
+        return res.data
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+        throw err
+      })
   }
 
-  // Créer un auteur
   const createAuthor = (author: CreateAuthor) => {
-    apiClient
+    return apiClient
       .post('/authors', author)
-      .then(() => {
-        loadAuthors()
+      .then(() => loadAuthors())
+      .catch(err => {
+        console.error(err)
+        throw err
       })
-      .catch(err => console.error(err))
   }
 
-  // Mettre à jour un auteur
   const updateAuthor = (id: string, input: UpdateAuthor) => {
-    apiClient
+    return apiClient
       .patch(`/authors/${id}`, input)
-      .then(() => {
-        loadAuthors()
+      .then(() => loadAuthors())
+      .catch(err => {
+        console.error(err)
+        throw err
       })
-      .catch(err => console.error(err))
   }
 
-  // Supprimer un auteur
   const deleteAuthor = (id: string) => {
-    apiClient
+    return apiClient
       .delete(`/authors/${id}`)
-      .then(() => {
-        loadAuthors()
+      .then(() => loadAuthors())
+      .catch(err => {
+        console.error(err)
+        throw err
       })
-      .catch(err => console.error(err))
+  }
+
+  const getBooksByAuthor = (id: string) => {
+    return apiClient
+      .get<Book[]>(`/authors/${id}/books`)
+      .then(res => {
+        setBooks(res.data as BookModel[])
+        return res.data
+      })
+      .catch(err => {
+        console.error(err)
+        throw err
+      })
   }
 
   return {
     authors,
+    books,
     loadAuthors,
     createAuthor,
     updateAuthor,
     deleteAuthor,
+    getBooksByAuthor,
   }
 }

@@ -23,6 +23,22 @@ export class AuthorController {
     return this.authorService.getAllAuthors();
   }
 
+  // ✅ NEW: Get author details
+  @Get(':id')
+  async getAuthorById(@Param('id') id: string) {
+    const author = await this.authorService.getAuthorById(id);
+    if (!author) {
+      return { message: 'Author not found' };
+    }
+    return author;
+  }
+
+  // ✅ NEW: Get all books written by this author
+  @Get(':id/books')
+  async getBooksByAuthor(@Param('id') id: string) {
+    return this.authorService.getBooksByAuthorId(id);
+  }
+
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.LIBRARIAN)
