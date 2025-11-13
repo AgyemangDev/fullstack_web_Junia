@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/react-router'
+﻿import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Form, Input, Button, Card, Typography, Alert, Space } from 'antd'
 import { useAuth } from '../AuthContext'
@@ -81,7 +81,7 @@ export function LoginPage() {
                 { required: true, message: 'Please enter your password' },
               ]}
             >
-              <Input.Password placeholder="••••••••" size="large" />
+              <Input.Password placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" size="large" />
             </Form.Item>
 
             <Form.Item>

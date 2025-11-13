@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as indexRoute } from './routes/index'
 import { Route as aboutRoute } from './routes/about'
@@ -63,7 +63,13 @@ export function Layout({ children }: LayoutProps) {
   ]
 
   return (
-    <Space direction="vertical" style={{ width: '100%', height: '100vh' }}>
+    <Space
+      direction="vertical"
+      style={{
+        width: '100%',
+        height: '100vh',
+      }}
+    >
       <div
         style={{
           display: 'flex',

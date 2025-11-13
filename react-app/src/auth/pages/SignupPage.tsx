@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/react-router'
+﻿import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import {
   Form,
@@ -119,7 +119,10 @@ export function SignupPage() {
                 { min: 6, message: 'Password must be at least 6 characters' },
               ]}
             >
-              <Input.Password placeholder="••••••••" size="large" />
+              <Input.Password
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                size="large"
+              />
             </Form.Item>
 
             <Form.Item

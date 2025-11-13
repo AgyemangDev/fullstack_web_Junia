@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+﻿import { Link } from '@tanstack/react-router'
 import { Row, Col, Card, Typography } from 'antd'
 import { Route as booksRoute } from './routes/books/index'
 import { Route as authorsRoute } from './routes/authors/index'
@@ -17,7 +17,16 @@ function App() {
     <div
       style={{
         minHeight: '100vh',
-        background: 'linear-gradient(to bottom, #f5f7fa 0%, #c3cfe2 100%)',
+        backgroundImage: `url('https://media.gettyimages.com/id/1785356782/video/wooden-three-dimensional-bookcases-in-the-library.jpg?s=640x640&k=20&c=CkNAEeKrsQPe03cePFPpVMka591JhGMGEFDVOWfaBkE=')`,
+        backgroundAttachment: 'scroll',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundClip: 'border-box',
+        WebkitBackgroundSize: 'cover',
+        imageRendering: 'crisp-edges',
+        WebkitFontSmoothing: 'antialiased',
+        WebkitTransform: 'translate3d(0, 0, 0)',
       }}
     >
       {/* Hero Section */}
@@ -25,8 +34,12 @@ function App() {
         style={{
           padding: '80px 2rem',
           textAlign: 'center',
-          background: 'linear-gradient(135deg, #395E66 0%, #2a4850 100%)',
           color: 'white',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Title
@@ -61,7 +74,7 @@ function App() {
           style={{
             textAlign: 'center',
             marginBottom: '3rem',
-            color: '#395E66',
+            color: 'white',
           }}
         >
           Explore Our Collection
@@ -238,7 +251,7 @@ function App() {
                       marginBottom: '1rem',
                     }}
                   >
-                    ∞
+                    âˆž
                   </div>
                   <Paragraph
                     style={{
@@ -267,7 +280,7 @@ function App() {
         <Paragraph
           style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: 0 }}
         >
-          © 2025 Babel&apos;s Library - Your literary journey starts here
+          Â© 2025 Babel&apos;s Library - Your literary journey starts here
         </Paragraph>
       </div>
     </div>
