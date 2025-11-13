@@ -11,14 +11,6 @@ export interface Author {
   photo?: string
 }
 
-export interface Book {
-  id: string
-  title: string
-  publicationYear?: number
-  genre?: string
-  cover?: string
-}
-
 export interface CreateAuthor {
   firstName: string
   lastName: string
@@ -33,60 +25,41 @@ export const useAuthorProvider = () => {
   const [authors, setAuthors] = useState<Author[]>([])
   const [books, setBooks] = useState<BookModel[]>([])
 
-  const loadAuthors = () => {
-    return apiClient
-      .get<Author[]>('/authors')
-      .then(res => {
-        setAuthors(res.data)
-        return res.data
-      })
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
+  const loadAuthors = async () => {
+    try {
+      const res = await apiClient.get<Author[]>('/authors')
+      setAuthors(res.data)
+      return res.data
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
   }
 
-  const createAuthor = (author: CreateAuthor) => {
-    return apiClient
-      .post('/authors', author)
-      .then(() => loadAuthors())
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
+  const createAuthor = async (author: CreateAuthor) => {
+    await apiClient.post('/authors', author)
+    await loadAuthors()
   }
 
-  const updateAuthor = (id: string, input: UpdateAuthor) => {
-    return apiClient
-      .patch(`/authors/${id}`, input)
-      .then(() => loadAuthors())
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
+  const updateAuthor = async (id: string, input: UpdateAuthor) => {
+    await apiClient.patch(`/authors/${id}`, input)
+    await loadAuthors()
   }
 
-  const deleteAuthor = (id: string) => {
-    return apiClient
-      .delete(`/authors/${id}`)
-      .then(() => loadAuthors())
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
+  const deleteAuthor = async (id: string) => {
+    await apiClient.delete(`/authors/${id}`)
+    await loadAuthors()
   }
 
-  const getBooksByAuthor = (id: string) => {
-    return apiClient
-      .get<Book[]>(`/authors/${id}/books`)
-      .then(res => {
-        setBooks(res.data as BookModel[])
-        return res.data
-      })
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
+  const getBooksByAuthor = async (id: string) => {
+    try {
+      const res = await apiClient.get<BookModel[]>(`/authors/${id}/books`)
+      setBooks(res.data)
+      return res.data
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
   }
 
   return {

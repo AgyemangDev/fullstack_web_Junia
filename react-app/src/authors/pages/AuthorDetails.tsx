@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Button, Popconfirm, message, Typography, List } from 'antd'
+import { Button, Popconfirm, message, Typography, List, Spin } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import {
   useAuthorProvider,
   type Author,
-  type Book,
   type CreateAuthor,
 } from '../providers/useAuthorProvider'
 import AuthorFormModal from '../components/AuthorFormModal'
@@ -14,8 +13,9 @@ import type { BookModel } from '../../books/BookModel'
 const { Title, Text } = Typography
 
 export const AuthorDetails = ({ id }: { id: string }) => {
-  const { authors, loadAuthors, updateAuthor, deleteAuthor, getBooksByAuthor } =
+  const { loadAuthors, updateAuthor, deleteAuthor, getBooksByAuthor } =
     useAuthorProvider()
+
   const [author, setAuthor] = useState<Author | null>(null)
   const [books, setBooks] = useState<BookModel[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -25,38 +25,20 @@ export const AuthorDetails = ({ id }: { id: string }) => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        await loadAuthors()
-        const apiBooks = await getBooksByAuthor(id)
-        const foundAuthor = authors.find(a => a.id === id)
+        const loadedAuthors = await loadAuthors()
+        const foundAuthor = loadedAuthors.find(a => a.id === id)
 
-        const mappedBooks: BookModel[] = apiBooks.map((b: Book) => ({
-          id: b.id,
-          title: b.title,
-          genre: (b.genre as BookModel['genre']) || 'Fiction',
-          yearPublished: b.publicationYear || 0,
-          photoUrl: b.cover || '',
-          description: '',
-          isAvailable: true,
-          numberOfBooks: 1,
-          author: foundAuthor
-            ? {
-                id: foundAuthor.id,
-                firstName: foundAuthor.firstName,
-                lastName: foundAuthor.lastName,
-                biography: foundAuthor.biography || '',
-                nationality: foundAuthor.nationality || '',
-              }
-            : {
-                id: '',
-                firstName: '',
-                lastName: '',
-                biography: '',
-                nationality: '',
-              },
-        }))
-        setBooks(mappedBooks)
+        if (!foundAuthor) {
+          message.error('Author not found')
+          return
+        }
+
+        setAuthor(foundAuthor)
+
+        const apiBooks = await getBooksByAuthor(id)
+        setBooks(apiBooks)
       } catch (err) {
-        console.error(err)
+        console.error('Error loading author details:', err)
         message.error('Error loading author details')
       } finally {
         setLoading(false)
@@ -65,11 +47,6 @@ export const AuthorDetails = ({ id }: { id: string }) => {
 
     fetchData()
   }, [id])
-
-  useEffect(() => {
-    const found = authors.find(a => a.id === id)
-    if (found) setAuthor(found)
-  }, [authors, id])
 
   const handleUpdate = async (values: CreateAuthor) => {
     try {
@@ -90,47 +67,66 @@ export const AuthorDetails = ({ id }: { id: string }) => {
     }
   }
 
-  if (loading) return <p>Loading author details...</p>
-  if (!author) return <p>Author not found</p>
+  if (loading)
+    return (
+      <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+        <Spin size="large" tip="Loading author details..." />
+      </div>
+    )
+
+  if (!author) return <p style={{ textAlign: 'center' }}>Author not found.</p>
 
   return (
     <div style={{ padding: '2rem' }}>
-      <Title level={3}>{`${author.firstName} ${author.lastName}`}</Title>
-      {author.nationality && <Text type="secondary">{author.nationality}</Text>}
-      {author.biography && (
-        <p style={{ marginTop: '1rem' }}>{author.biography}</p>
-      )}
-      {author.photo && (
-        <img
-          src={author.photo}
-          alt={`${author.firstName} ${author.lastName}`}
-          style={{ marginTop: '1rem', maxWidth: '200px', borderRadius: '8px' }}
-        />
-      )}
+      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+        {author.photo && (
+          <img
+            src={author.photo}
+            alt={`${author.firstName} ${author.lastName}`}
+            style={{
+              maxWidth: '200px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+            }}
+          />
+        )}
 
-      <div style={{ marginTop: '1.5rem' }}>
-        <Button
-          icon={<EditOutlined />}
-          type="primary"
-          onClick={() => setIsModalOpen(true)}
-          style={{ marginRight: '1rem' }}
-        >
-          Edit
-        </Button>
+        <div>
+          <Title level={3}>{`${author.firstName} ${author.lastName}`}</Title>
+          {author.nationality && (
+            <Text type="secondary">{author.nationality}</Text>
+          )}
+          {author.biography && (
+            <p style={{ marginTop: '1rem', maxWidth: 600 }}>
+              {author.biography}
+            </p>
+          )}
 
-        <Popconfirm
-          title="Delete author?"
-          onConfirm={handleDelete}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button danger icon={<DeleteOutlined />}>
-            Delete
-          </Button>
-        </Popconfirm>
+          <div style={{ marginTop: '1.5rem' }}>
+            <Button
+              icon={<EditOutlined />}
+              type="primary"
+              onClick={() => setIsModalOpen(true)}
+              style={{ marginRight: '1rem' }}
+            >
+              Edit
+            </Button>
+
+            <Popconfirm
+              title="Delete author?"
+              onConfirm={handleDelete}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button danger icon={<DeleteOutlined />}>
+                Delete
+              </Button>
+            </Popconfirm>
+          </div>
+        </div>
       </div>
 
-      <div style={{ marginTop: '2rem' }}>
+      <div style={{ marginTop: '3rem' }}>
         <Title level={4}>Books by this author</Title>
         {books.length === 0 ? (
           <Text type="secondary">No books found for this author.</Text>

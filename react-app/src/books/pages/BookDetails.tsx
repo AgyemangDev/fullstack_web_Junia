@@ -303,12 +303,18 @@ export const BookDetails = ({ id, onUpdate, onDelete }: BookDetailsProps) => {
               <Title level={4} style={{ color: '#395E66' }}>
                 About the author
               </Title>
-              <Title
-                level={5}
-                style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
+              <Link
+                to="/authors/$authorId"
+                style={{
+                  color: '#1677ff',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  textDecoration: 'none',
+                }}
+                params={{ authorId: book.author.id }}
               >
                 {book.author.firstName} {book.author.lastName}
-              </Title>
+              </Link>
 
               {book.author.nationality && (
                 <Text
