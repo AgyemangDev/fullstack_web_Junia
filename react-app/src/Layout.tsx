@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as indexRoute } from './routes/index'
 import { Route as aboutRoute } from './routes/about'
