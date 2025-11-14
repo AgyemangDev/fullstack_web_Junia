@@ -27,7 +27,7 @@ function About() {
             marginBottom: '3rem',
           }}
         >
-          About Babel&apos;s Library
+          About Bangla Library
         </Title>
 
         <Row gutter={[32, 32]} style={{ marginBottom: '3rem' }}>
@@ -43,10 +43,9 @@ function About() {
                 Our Mission
               </Title>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Babel&apos;s Library was created to provide modern and easy
-                access to a vast collection of books. We believe that reading is
-                essential for education, personal fulfillment and cultural
-                development.
+                Bangla Library was created to provide modern and easy reading is
+                essential for for for education, personal personal personal
+                fulfillment and cultural development.
               </Paragraph>
               <Paragraph style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
                 Our digital platform allows everyone to discover new books,
